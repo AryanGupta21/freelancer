@@ -3,12 +3,32 @@
 
 import Link from 'next/link'
 import { ArrowRight, Users, Briefcase, Star, Shield, Clock } from 'lucide-react'
+import { Session, SupabaseClient } from '@supabase/supabase-js'
+import { useEffect, useState } from 'react'
+import { Auth } from '@supabase/auth-ui-react';
+import { ThemeSupa } from '@supabase/auth-ui-shared';
+import JobPostManager from '../../components/ui/JobPostManager';
+import { supabase } from '../../lib/supabase';
+import Navbar from '@/components/ui/NavBar'
 
 export default function LandingPage() {
+
+  const [session, setSession] = useState<Session|null>(null);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setSession(session);
+      }
+    );
+  }, []);
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50">
-      {/* Hero Section */}
-      <main className="container mx-auto px-4 py-12">
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
             Find the perfect
@@ -117,7 +137,6 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
-      </main>
 
       {/* Footer */}
       <footer className="mt-20 bg-gray-900 text-white py-12">
