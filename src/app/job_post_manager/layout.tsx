@@ -1,7 +1,6 @@
 // src/app/layout.tsx - Root Layout
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import './globals.css'
 import { SessionProvider } from '@/components/SessionProvider'
 import Navbar from '@/components/ui/NavBar'
 
@@ -26,15 +25,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
-        <SessionProvider>
-        <Navbar />
-        <div id="root">
-          {children}
-        </div>
-        </SessionProvider>
-      </body>
-    </html>
+    <>
+        {children}
+    </>
   )
 }
