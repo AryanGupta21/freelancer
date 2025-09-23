@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={inter.className} suppressHydrationWarning>
+      <body className="bg-white text-black" suppressHydrationWarning>
         <SessionProvider>
         <Navbar />
         <div id="root">

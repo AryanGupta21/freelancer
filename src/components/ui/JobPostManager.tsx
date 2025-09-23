@@ -2,13 +2,14 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../lib/supabase'; 
 import { Session } from '@supabase/supabase-js';
 import { JobPost } from '../../types/job_post'; 
+import { ApplicantCard } from './ApplicantCard';
+import { JobApplication } from '@/types/job_application';
 
 interface JobPostManagerProps {
   session: Session;
 }
 
 const JobPostManager: React.FC<JobPostManagerProps> = ({ session }) => {
-  // --- Typed State Hooks ---
   const [posts, setPosts] = useState<JobPost[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [editingPost, setEditingPost] = useState<JobPost | null>(null);
@@ -18,9 +19,10 @@ const JobPostManager: React.FC<JobPostManagerProps> = ({ session }) => {
   const [status, setStatus] = useState<'Open' | 'Hired' | 'Closed'>('Open');
   const [tags, setTags] = useState<string[]>([]);
   const [currentTag, setCurrentTag] = useState<string>('');
-
   const [selectedPost, setSelectedPost] = useState<JobPost | null>(null);
-const [view, setView] = useState<'welcome' | 'create' | 'edit'>('create');
+  const [applications, setApplications] = useState<JobApplication[]>([]);
+  const [expandedApplicationId, setExpandedApplicationId] = useState<string | null>(null);
+const [view, setView] = useState<'welcome' | 'create' | 'edit'>('welcome');
 
 // This handler will be for the "Create New Post" button
 const handleCreateClick = () => {
@@ -159,13 +161,45 @@ const handlePostSelect = (post: JobPost) => {
     }
   };
 
+  const fetchApplications = useCallback(async () => {
+    if (!selectedPost) return;
+    const { data, error } = await supabase
+      .from('job_applications')
+      .select('*')
+      .eq('job_id', selectedPost.id)
+      .order('created_at', { ascending: false });
+
+    if (error) console.error("Error fetching applications:", error);
+    else setApplications(data);
+  }, [selectedPost]);
+
+  // Re-fetch applications whenever a new post is selected
+  useEffect(() => {
+    if (selectedPost) {
+      fetchApplications();
+    }
+  }, [selectedPost, fetchApplications]);
+
+  const handleStatusUpdate = async (appId: string, status: 'accepted' | 'rejected') => {
+    const { error } = await supabase.from('job_applications').update({ status }).eq('id', appId);
+    if (error) {
+      alert('Error updating status: ' + error.message);
+    } else {
+      // Refresh the list to show the new status
+      fetchApplications();
+    }
+  };
+
+  const handleToggleApplication = (appId: string) => {
+    setExpandedApplicationId(prevId => (prevId === appId ? null : appId));
+  };
+
   if (loading) return <p>Loading your posts...</p>;
 
 return (
   <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 min-h-[calc(100vh-100px)] text-black">
     <div className="lg:col-span-2 bg-white border-r border-gray-200 p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold text-text-dark">Your Posts</h2>
         <button
           onClick={handleCreateClick}
           className="bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-primary-dark transition-colors flex items-center gap-2"
@@ -183,18 +217,26 @@ return (
             <div
               key={post.id}
               onClick={() => handlePostSelect(post)}
-              className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 ${
+              className={`p-4 border rounded-lg cursor-pointer transition-all duration-200 flex ${
                 selectedPost?.id === post.id
                   ? 'bg-primary/10 border-primary shadow-md'
                   : 'bg-gray-50 border-gray-200 hover:bg-gray-100 hover:border-gray-300'
               }`}
             >
-              <h3 className="font-bold text-text-dark">{post.title}</h3>
-              <p className={`text-sm font-semibold mt-1 ${
-                post.status === 'Open' ? 'text-success' : post.status === 'Hired' ? 'text-primary' : 'text-text-light'
-              }`}>
-                {post.status}
-              </p>
+              <div>
+                <h3 className="font-bold text-text-dark">{post.title}</h3>
+                <p className={`text-sm font-semibold mt-1 ${
+                  post.status === 'Open' ? 'text-success' : post.status === 'Hired' ? 'text-primary' : 'text-text-light'
+                }`}>
+                  {post.status}
+                </p>
+              </div>
+              <div className="ml-auto align-center items-center gap-2">
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleDelete(post.id); }}
+                  className="text-white hover:bg-red-600 bg-red-400 font-semibold py-1 px-3 rounded-lg transition-colors"
+                  title="Delete Post">Delete</button>
+                </div>
             </div>
           ))
         ) : (
@@ -203,9 +245,6 @@ return (
       </div>
     </div>
 
-    {/* ============================================= */}
-    {/* ==      RIGHT COLUMN: DYNAMIC VIEW         == */}
-    {/* ============================================= */}
     <div className="lg:col-span-3 bg-white">
       {view === 'welcome' && (
         <div className="flex flex-col items-center justify-center h-full bg-gray-50 rounded-lg">
@@ -280,6 +319,28 @@ return (
               </button>
             </div>
           </form>
+          <div>
+            <section>
+              <h3 className="text-2xl font-semibold text-text-dark border-b border-gray-200 pb-3 mb-4">
+                Applicants ({applications.length})
+              </h3>
+              <div className="space-y-4">
+                {applications.length > 0 ? (
+                  applications.map(app => (
+                    <ApplicantCard
+                      key={app.id}
+                      application={app}
+                      isExpanded={expandedApplicationId === app.id}
+                      onToggle={() => handleToggleApplication(app.id)}
+                      onStatusUpdate={handleStatusUpdate}
+                    />
+                  ))
+                ) : (
+                  <p className="text-center text-text-medium p-8 bg-gray-50 rounded-lg">No applications received for this post yet.</p>
+                )}
+              </div>
+            </section>
+          </div>
         </div>
       )}
     </div>
