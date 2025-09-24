@@ -90,22 +90,24 @@ export default function SignupPage() {
       if (authError) throw authError
 
       if (authData.user) {
-        // Create profile record (bypass TypeScript checking)
-        const { error: profileError } = await supabase
-          .from('profiles')
-          .insert({
-            id: authData.user.id,
-            user_type: userType,
-            first_name: formData.firstName,
-            last_name: formData.lastName,
-            email: formData.email,
-            is_profile_complete: false
-          } as any)
+        // Use secure database function to create profile (bypass TypeScript checking)
+        const { data: profileResult, error: profileError } = await supabase.rpc(
+          'create_user_profile_secure' as any,
+          {
+            user_id: authData.user.id,
+            user_type_param: userType,
+            first_name_param: formData.firstName,
+            last_name_param: formData.lastName,
+            email_param: formData.email
+          } as any
+        )
 
-        if (profileError) {
-          console.error('Profile creation error:', profileError)
-          throw new Error('Failed to create user profile')
+        if (profileError || !profileResult) {
+          console.error('Profile creation error:', profileError || profileResult)
+          throw new Error(profileError?.message ||'Failed to create user profile')
         }
+
+        console.log('Profile created successfully:', profileResult)
 
         // Redirect based on user type
         if (userType === 'freelancer') {

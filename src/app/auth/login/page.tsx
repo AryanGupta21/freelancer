@@ -1,4 +1,4 @@
-// src/app/auth/login/page.tsx - Login Page
+// src/app/auth/login/page.tsx - Debug version to see what's happening
 'use client'
 
 import { useState } from 'react'
@@ -15,6 +15,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [debugInfo, setDebugInfo] = useState<string>('')
   
   const router = useRouter()
 
@@ -28,46 +29,86 @@ export default function LoginPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
     setError(null)
+    setDebugInfo('')
     setLoading(true)
 
     try {
+      console.log('🔐 Starting login process...')
+      setDebugInfo('Starting login...')
+      
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
         email: formData.email,
         password: formData.password
       })
 
-      if (authError) throw authError
+      if (authError) {
+        console.error('❌ Auth error:', authError)
+        throw authError
+      }
+      
+      console.log('✅ Auth successful:', authData.user?.id)
+      setDebugInfo('Auth successful, fetching profile...')
 
       if (authData.user) {
+        console.log('👤 Getting user profile...')
+        
         // Get user profile to determine user type and completion status
         const { data: profile, error: profileError } = await supabase
           .from('profiles')
-          .select('user_type, is_profile_complete')
+          .select('user_type, is_profile_complete, first_name, last_name')
           .eq('id', authData.user.id)
           .single()
 
-        if (profileError) throw profileError
+        if (profileError) {
+          console.error('❌ Profile fetch error:', profileError)
+          setDebugInfo(`Profile error: ${profileError.message}`)
+          throw profileError
+        }
+
+        console.log('📋 Profile data:', profile)
+        setDebugInfo(`Profile found: ${profile.user_type}, complete: ${profile.is_profile_complete}`)
+
+        // Wait a moment for state to update
+        await new Promise(resolve => setTimeout(resolve, 100))
 
         // Type assertion to handle TypeScript inference issues
         const userProfile = profile as {
           user_type: 'freelancer' | 'recruiter'
           is_profile_complete: boolean | null
+          first_name: string | null
+          last_name: string | null
         }
+
+        console.log('🎯 User type:', userProfile.user_type)
+        console.log('📊 Profile complete:', userProfile.is_profile_complete)
 
         // Redirect based on user type and profile completion
         if (userProfile.user_type === 'freelancer') {
           if (userProfile.is_profile_complete) {
+            console.log('🏠 Redirecting to freelancer dashboard...')
+            setDebugInfo('Redirecting to dashboard...')
             router.push('/dashboard/freelancer')
           } else {
+            console.log('📝 Redirecting to onboarding...')
+            setDebugInfo('Redirecting to onboarding...')
             router.push('/onboarding/skills')
           }
         } else {
+          console.log('🏢 Redirecting to recruiter dashboard...')
+          setDebugInfo('Redirecting to recruiter dashboard...')
           router.push('/dashboard/recruiter')
         }
+
+        // Additional debug info
+        setTimeout(() => {
+          console.log('🔄 Router push completed')
+          setDebugInfo(prev => prev + ' - Router push completed')
+        }, 1000)
       }
     } catch (err) {
-      console.error('Login error:', err)
+      console.error('💥 Login error:', err)
       setError(err instanceof Error ? err.message : 'An error occurred during login')
+      setDebugInfo(`Error: ${err instanceof Error ? err.message : 'Unknown error'}`)
     } finally {
       setLoading(false)
     }
@@ -79,6 +120,17 @@ export default function LoginPage() {
         <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h2>
         <p className="text-gray-600">Sign in to your account to continue</p>
       </div>
+
+      {/* Debug Info */}
+      {debugInfo && (
+        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-md p-4">
+          <div className="flex">
+            <div className="ml-3">
+              <p className="text-sm text-blue-800">Debug: {debugInfo}</p>
+            </div>
+          </div>
+        </div>
+      )}
 
       {error && (
         <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
