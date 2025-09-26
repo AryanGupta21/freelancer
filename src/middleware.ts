@@ -33,7 +33,7 @@ export async function middleware(req: NextRequest) {
               : '/onboarding/skills'
             return NextResponse.redirect(new URL(redirectUrl, req.url))
           } else {
-            return NextResponse.redirect(new URL('/dashboard/recruiter', req.url))
+            return NextResponse.redirect(new URL('/dashboard/client', req.url))
           }
         }
       } catch (error) {
