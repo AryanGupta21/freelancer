@@ -7,7 +7,9 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { JobPost } from '@/types/job_post';
 
-type PostWithCount = JobPost & { application_count: number };
+interface PostWithCount { application_count: number | null; created_at: string | null; description: string | null; id: string | null; pay_amount: number | null; status: string | null; tags: string[] | null; title: string | null; user_id: string | null; }
+
+// type PostWithCount = JobPost & { application_count: number };
 
 export default function PostDetailsPage({ params }: { params: { id: string } }) {
   const { session } = useSession();

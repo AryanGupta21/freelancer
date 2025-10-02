@@ -11,13 +11,12 @@ type PostWithCount = JobPost & {
 
 interface JobPostCardProps {
   post: PostWithCount;
-  onApply: (jobId: string) => void;
   appliedJobIds: string[];
 }
 
 export const JobPostCard: React.FC<JobPostCardProps> = ({ post, appliedJobIds }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const hasApplied = appliedJobIds.includes(post.id);
+  const hasApplied = post.id != null ? appliedJobIds.includes(post.id) : false;
 
   return (
     <div className="bg-white border border-gray-200 rounded-xl shadow-sm transition-all duration-200 overflow-hidden">

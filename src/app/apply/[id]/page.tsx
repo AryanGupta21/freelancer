@@ -19,11 +19,13 @@ export default function ApplyPage({ params }: { params: { id: string } }) {
   const [currentSkill, setCurrentSkill] = useState('');
 
   useEffect(() => {
-    if (!session) router.push('/login');
+    if (!session) router.push('/auth/login');
     const fetchPost = async () => {
       const { data, error } = await supabase.from('job_posts').select('title').eq('id', params.id).single();
       if (error) return notFound();
-      setPost(data);
+      setPost({
+          ...data
+      } as JobPost);
     };
     fetchPost();
   }, [params.id, router, session]);

@@ -27,7 +27,7 @@ export default function FeedPage() {
     if (postError) {
       console.error('Error fetching posts:', postError);
     } else {
-      setPosts(postData);
+      setPosts(postData as PostWithCount[]);
     }
 
     // If user is logged in, fetch their applications to disable "Apply" buttons
