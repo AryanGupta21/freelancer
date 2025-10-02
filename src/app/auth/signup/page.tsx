@@ -100,7 +100,7 @@ export default function SignupPage() {
             last_name: formData.lastName,
             email: formData.email,
             is_profile_complete: false
-          } as any)
+          })
 
         if (profileError) {
           console.error('Profile creation error:', profileError)

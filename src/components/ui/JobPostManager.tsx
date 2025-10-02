@@ -47,7 +47,7 @@ const handlePostSelect = (post: JobPost) => {
 
       if (error) throw error;
       setPosts(data || []);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error fetching posts:', error.message);
     } finally {
       setLoading(false);
@@ -128,7 +128,7 @@ const handlePostSelect = (post: JobPost) => {
       alert(`Post ${editingPost ? 'updated' : 'created'} successfully! 🎉`);
       resetForm();
       await fetchPosts();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error saving post:', error.message);
       alert('Failed to save post.');
     }
@@ -155,7 +155,7 @@ const handlePostSelect = (post: JobPost) => {
         if (error) throw error;
         alert('Post deleted successfully!');
         await fetchPosts();
-      } catch (error: any) {
+      } catch (error) {
         console.error('Error deleting post:', error.message);
       }
     }
@@ -240,7 +240,7 @@ return (
             </div>
           ))
         ) : (
-          <p className="text-center text-text-medium p-8">You haven't created any posts yet.</p>
+          <p className="text-center text-text-medium p-8">You haven&apos;t created any posts yet.</p>
         )}
       </div>
     </div>

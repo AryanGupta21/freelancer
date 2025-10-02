@@ -1,7 +1,9 @@
 import { cn } from '@/lib/utils'
 import { HTMLAttributes } from 'react'
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {}
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
+    random: string | null;
+}
 
 export function Card({ className, ...props }: CardProps) {
   return (

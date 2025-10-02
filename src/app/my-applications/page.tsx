@@ -3,9 +3,10 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
+import { JobApplication } from '@/types/job_application'
 
 export default function MyApplicationsPage() {
-  const [applications, setApplications] = useState<any[]>([]); // Define a proper type for this join
+  const [applications, setApplications] = useState<JobApplication[]>([]); // Define a proper type for this join
 
   useEffect(() => {
     const fetchMyApps = async () => {
