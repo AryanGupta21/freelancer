@@ -50,10 +50,10 @@ const Navbar = () => {
             </>
           ) : (
             <>
-              <Link href="/login" className="text-base font-medium text-text-medium hover:text-primary transition-colors">
+              <Link href="/auth/login" className="text-base font-medium text-text-medium hover:text-primary transition-colors">
                 Login
               </Link>
-              <Link href="/signup" className="bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-primary-dark transition-colors">
+              <Link href="/auth/signup" className="bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-primary-dark transition-colors">
                 Signup
               </Link>
             </>
