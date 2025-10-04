@@ -1,11 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 // src/lib/utils.ts - Utility functions
 import { type ClassValue, clsx } from 'clsx'
-import { twMerge } from 'tailwind-merge'
 
-// Utility for combining Tailwind classes
+// Utility for combining CSS classes
 export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
+  return clsx(inputs)
 }
 
 // Format currency

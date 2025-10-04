@@ -124,11 +124,11 @@ export default function SignupPage() {
 
   return (
     <div>
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">
+      <div className="auth-page-header">
+        <h2 className="auth-page-title">
           Join as a {userType === 'freelancer' ? 'Freelancer' : 'Client'}
         </h2>
-        <p className="text-gray-600">
+        <p className="auth-page-subtitle">
           {userType === 'freelancer' 
             ? 'Start your freelance journey and find amazing projects'
             : 'Find the perfect talent for your business needs'
@@ -137,15 +137,11 @@ export default function SignupPage() {
       </div>
 
       {/* User Type Toggle */}
-      <div className="flex mb-8 bg-gray-100 p-1 rounded-lg">
+      <div className="user-type-toggle">
         <button
           type="button"
           onClick={() => setUserType('freelancer')}
-          className={`flex-1 flex items-center justify-center py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-            userType === 'freelancer'
-              ? 'bg-white text-green-700 shadow-sm'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
+          className={`user-type-btn ${userType === 'freelancer' ? 'active freelancer' : ''}`}
         >
           <Briefcase className="w-4 h-4 mr-2" />
           Freelancer
@@ -153,11 +149,7 @@ export default function SignupPage() {
         <button
           type="button"
           onClick={() => setUserType('recruiter')}
-          className={`flex-1 flex items-center justify-center py-2 px-4 rounded-md text-sm font-medium transition-colors ${
-            userType === 'recruiter'
-              ? 'bg-white text-blue-700 shadow-sm'
-              : 'text-gray-500 hover:text-gray-700'
-          }`}
+          className={`user-type-btn ${userType === 'recruiter' ? 'active recruiter' : ''}`}
         >
           <Users className="w-4 h-4 mr-2" />
           Client
@@ -165,7 +157,7 @@ export default function SignupPage() {
       </div>
 
       {error && (
-        <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
+        <div className="auth-error-message">
           <div className="flex">
             <AlertCircle className="h-5 w-5 text-red-400" />
             <div className="ml-3">
@@ -175,10 +167,10 @@ export default function SignupPage() {
         </div>
       )}
 
-      <form onSubmit={handleSignup} className="space-y-6">
-        <div className="grid grid-cols-2 gap-4">
+      <form onSubmit={handleSignup} className="auth-form">
+        <div className="auth-form-row">
           <div>
-            <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="firstName" className="input-label">
               First name *
             </label>
             <input
@@ -188,12 +180,12 @@ export default function SignupPage() {
               required
               value={formData.firstName}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="input-field"
               placeholder="Enter your first name"
             />
           </div>
           <div>
-            <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="lastName" className="input-label">
               Last name *
             </label>
             <input
@@ -203,14 +195,14 @@ export default function SignupPage() {
               required
               value={formData.lastName}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="input-field"
               placeholder="Enter your last name"
             />
           </div>
         </div>
 
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="input-label">
             Email address *
           </label>
           <input
@@ -220,16 +212,16 @@ export default function SignupPage() {
             required
             value={formData.email}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="input-field"
             placeholder="Enter your email"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="input-label">
             Password *
           </label>
-          <div className="relative">
+          <div className="password-input-container">
             <input
               id="password"
               name="password"
@@ -237,13 +229,13 @@ export default function SignupPage() {
               required
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="input-field password-input"
               placeholder="Enter your password"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              className="password-toggle-btn"
             >
               {showPassword ? (
                 <EyeOff className="h-5 w-5 text-gray-400" />
@@ -252,14 +244,14 @@ export default function SignupPage() {
               )}
             </button>
           </div>
-          <p className="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
+          <p className="input-help-text">Must be at least 6 characters</p>
         </div>
 
         <div>
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="confirmPassword" className="input-label">
             Confirm password *
           </label>
-          <div className="relative">
+          <div className="password-input-container">
             <input
               id="confirmPassword"
               name="confirmPassword"
@@ -267,13 +259,13 @@ export default function SignupPage() {
               required
               value={formData.confirmPassword}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="input-field password-input"
               placeholder="Confirm your password"
             />
             <button
               type="button"
               onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              className="password-toggle-btn"
             >
               {showConfirmPassword ? (
                 <EyeOff className="h-5 w-5 text-gray-400" />
@@ -287,15 +279,11 @@ export default function SignupPage() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white transition-colors ${
-            userType === 'freelancer'
-              ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
-              : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
-          } ${loading ? 'opacity-50 cursor-not-allowed' : ''} focus:outline-none focus:ring-2 focus:ring-offset-2`}
+          className={`auth-submit-btn auth-submit-btn-${userType} ${loading ? 'loading' : ''}`}
         >
           {loading ? (
             <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              <div className="loading-spinner loading-spinner-sm"></div>
               <span className="ml-2">Creating account...</span>
             </div>
           ) : (
@@ -304,22 +292,22 @@ export default function SignupPage() {
         </button>
       </form>
 
-      <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600">
+      <div className="auth-switch-section">
+        <p className="auth-switch-text">
           Already have an account?{' '}
-          <Link href="/auth/login" className="font-medium text-blue-600 hover:text-blue-500">
+          <Link href="/auth/login" className="auth-link">
             Sign in
           </Link>
         </p>
       </div>
 
-      <div className="mt-4 text-xs text-gray-500 text-center">
+      <div className="auth-terms">
         By signing up, you agree to our{' '}
-        <Link href="/terms" className="text-blue-600 hover:text-blue-500">
+        <Link href="/terms" className="auth-link">
           Terms of Service
         </Link>{' '}
         and{' '}
-        <Link href="/privacy" className="text-blue-600 hover:text-blue-500">
+        <Link href="/privacy" className="auth-link">
           Privacy Policy
         </Link>
       </div>
