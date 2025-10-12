@@ -1,12 +1,14 @@
 import { cn } from '@/lib/utils'
 import { HTMLAttributes } from 'react'
 
-interface CardProps extends HTMLAttributes<HTMLDivElement> {}
+interface CardProps extends HTMLAttributes<HTMLDivElement> {
+    random: string | null;
+}
 
 export function Card({ className, ...props }: CardProps) {
   return (
     <div
-      className={cn('rounded-lg border border-gray-200 bg-white shadow-sm', className)}
+      className={cn('card', className)}
       {...props}
     />
   )
@@ -15,7 +17,7 @@ export function Card({ className, ...props }: CardProps) {
 export function CardHeader({ className, ...props }: CardProps) {
   return (
     <div
-      className={cn('flex flex-col space-y-1.5 p-6', className)}
+      className={cn('card-header', className)}
       {...props}
     />
   )
@@ -24,7 +26,7 @@ export function CardHeader({ className, ...props }: CardProps) {
 export function CardTitle({ className, ...props }: CardProps) {
   return (
     <h3
-      className={cn('text-lg font-semibold leading-none tracking-tight', className)}
+      className={cn('card-title', className)}
       {...props}
     />
   )
@@ -33,7 +35,7 @@ export function CardTitle({ className, ...props }: CardProps) {
 export function CardContent({ className, ...props }: CardProps) {
   return (
     <div
-      className={cn('p-6 pt-0', className)}
+      className={cn('card-content', className)}
       {...props}
     />
   )

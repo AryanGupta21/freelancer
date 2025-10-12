@@ -4,8 +4,20 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
 import Link from 'next/link';
 
+interface JobPost {
+    id: string;
+    title: string;
+}
+
+interface JobApplication {
+    id: string;
+    status: "pending" | "accepted" | "rejected";
+    created_at: string;
+    job_posts: JobPost;
+}
+
 export default function MyApplicationsPage() {
-  const [applications, setApplications] = useState<any[]>([]); // Define a proper type for this join
+  const [applications, setApplications] = useState<JobApplication[]>([]); // Define a proper type for this join
 
   useEffect(() => {
     const fetchMyApps = async () => {
@@ -19,7 +31,7 @@ export default function MyApplicationsPage() {
           job_posts ( id, title )
         `);
       if (error) console.error(error);
-      else setApplications(data || []);
+      else setApplications(data as JobApplication[] || []);
     };
     fetchMyApps();
   }, []);

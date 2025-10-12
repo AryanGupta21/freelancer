@@ -46,9 +46,9 @@ const handlePostSelect = (post: JobPost) => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setPosts(data || []);
-    } catch (error: any) {
-      console.error('Error fetching posts:', error.message);
+      setPosts(data as JobPost[] || []);
+    } catch (error) {
+      console.error('Error fetching posts:', error);
     } finally {
       setLoading(false);
     }
@@ -112,7 +112,7 @@ const handlePostSelect = (post: JobPost) => {
     };
 
     try {
-      if (editingPost) {
+      if (editingPost && editingPost.id != null) {
         // UPDATE
         const { error } = await supabase
           .from('job_posts')
@@ -128,8 +128,8 @@ const handlePostSelect = (post: JobPost) => {
       alert(`Post ${editingPost ? 'updated' : 'created'} successfully! 🎉`);
       resetForm();
       await fetchPosts();
-    } catch (error: any) {
-      console.error('Error saving post:', error.message);
+    } catch (error) {
+      console.error('Error saving post:', error);
       alert('Failed to save post.');
     }
     
@@ -148,21 +148,22 @@ const handlePostSelect = (post: JobPost) => {
     setTags(post.tags || []);
   };
 
-  const handleDelete = async (postId: string) => {
+  const handleDelete = async (postId: string | null) => {
+    if(postId == null) return;
     if (window.confirm('Are you sure you want to delete this post?')) {
       try {
         const { error } = await supabase.from('job_posts').delete().eq('id', postId);
         if (error) throw error;
         alert('Post deleted successfully!');
         await fetchPosts();
-      } catch (error: any) {
-        console.error('Error deleting post:', error.message);
+      } catch (error) {
+        console.error('Error deleting post:', error);
       }
     }
   };
 
   const fetchApplications = useCallback(async () => {
-    if (!selectedPost) return;
+    if (!selectedPost || selectedPost.id == null) return;
     const { data, error } = await supabase
       .from('job_applications')
       .select('*')
@@ -240,7 +241,7 @@ return (
             </div>
           ))
         ) : (
-          <p className="text-center text-text-medium p-8">You haven't created any posts yet.</p>
+          <p className="text-center text-text-medium p-8">You haven&apos;t created any posts yet.</p>
         )}
       </div>
     </div>

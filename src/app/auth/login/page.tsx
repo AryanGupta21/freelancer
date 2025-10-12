@@ -75,13 +75,13 @@ export default function LoginPage() {
 
   return (
     <div>
-      <div className="text-center mb-8">
-        <h2 className="text-3xl font-bold text-gray-900 mb-2">Welcome back</h2>
-        <p className="text-gray-600">Sign in to your account to continue</p>
+      <div className="auth-page-header">
+        <h2 className="auth-page-title">Welcome back</h2>
+        <p className="auth-page-subtitle">Sign in to your account to continue</p>
       </div>
 
       {error && (
-        <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
+        <div className="auth-error-message">
           <div className="flex">
             <AlertCircle className="h-5 w-5 text-red-400" />
             <div className="ml-3">
@@ -91,9 +91,9 @@ export default function LoginPage() {
         </div>
       )}
 
-      <form onSubmit={handleLogin} className="space-y-6">
+      <form onSubmit={handleLogin} className="auth-form">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="email" className="input-label">
             Email address
           </label>
           <input
@@ -103,16 +103,16 @@ export default function LoginPage() {
             required
             value={formData.email}
             onChange={handleInputChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+            className="input-field"
             placeholder="Enter your email"
           />
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="password" className="input-label">
             Password
           </label>
-          <div className="relative">
+          <div className="password-input-container">
             <input
               id="password"
               name="password"
@@ -120,13 +120,13 @@ export default function LoginPage() {
               required
               value={formData.password}
               onChange={handleInputChange}
-              className="w-full px-3 py-2 pr-10 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+              className="input-field password-input"
               placeholder="Enter your password"
             />
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              className="password-toggle-btn"
             >
               {showPassword ? (
                 <EyeOff className="h-5 w-5 text-gray-400" />
@@ -137,21 +137,21 @@ export default function LoginPage() {
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
+        <div className="auth-form-options">
           <div className="flex items-center">
             <input
               id="remember-me"
               name="remember-me"
               type="checkbox"
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="checkbox-input"
             />
-            <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+            <label htmlFor="remember-me" className="checkbox-label">
               Remember me
             </label>
           </div>
 
           <div className="text-sm">
-            <Link href="/auth/forgot-password" className="font-medium text-blue-600 hover:text-blue-500">
+            <Link href="/auth/forgot-password" className="auth-link">
               Forgot your password?
             </Link>
           </div>
@@ -160,13 +160,11 @@ export default function LoginPage() {
         <button
           type="submit"
           disabled={loading}
-          className={`w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors ${
-            loading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
+          className={`auth-submit-btn ${loading ? 'loading' : ''}`}
         >
           {loading ? (
             <div className="flex items-center justify-center">
-              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              <div className="loading-spinner loading-spinner-sm"></div>
               <span className="ml-2">Signing in...</span>
             </div>
           ) : (
@@ -175,29 +173,23 @@ export default function LoginPage() {
         </button>
       </form>
 
-      <div className="mt-6 text-center">
-        <p className="text-sm text-gray-600">
-          Don't have an account?{' '}
-          <Link href="/auth/signup" className="font-medium text-blue-600 hover:text-blue-500">
+      <div className="auth-switch-section">
+        <p className="auth-switch-text">
+          Don&apos;t have an account?
+          <Link href="/auth/signup" className="auth-link">
             Sign up
           </Link>
         </p>
       </div>
 
       {/* Quick signup links */}
-      <div className="mt-8 pt-6 border-t border-gray-200">
-        <p className="text-center text-sm text-gray-600 mb-4">New to FreelancePlatform?</p>
-        <div className="grid grid-cols-2 gap-3">
-          <Link
-            href="/auth/signup?type=freelancer"
-            className="w-full py-2 px-4 border border-green-300 rounded-md text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors text-center"
-          >
+      <div className="auth-quick-signup">
+        <p className="auth-quick-signup-title">New to FreelancePlatform?</p>
+        <div className="auth-quick-signup-buttons">
+          <Link href="/auth/signup?type=freelancer" className="auth-quick-btn auth-quick-btn-freelancer">
             Join as Freelancer
           </Link>
-          <Link
-            href="/auth/signup?type=recruiter"
-            className="w-full py-2 px-4 border border-blue-300 rounded-md text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors text-center"
-          >
+          <Link href="/auth/signup?type=recruiter" className="auth-quick-btn auth-quick-btn-client">
             Join as Client
           </Link>
         </div>
