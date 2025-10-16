@@ -260,41 +260,37 @@ export default function SkillsSelectionPage() {
 }
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#f5f5f0] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading skills...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-2 border-gray-600 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Loading skills...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f5f5f0]">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Tell us your top skills</h1>
-              <p className="text-gray-600 mt-1">This helps us recommend jobs for you.</p>
-            </div>
-            <div className="text-sm text-gray-500">
-              Step 1 of 4
-            </div>
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-4xl mx-auto px-6 py-6">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">Tell us your top skills</h1>
+            <p className="text-gray-600 mb-3">This helps us recommend jobs for you.</p>
+            <span className="text-sm text-gray-500 bg-[#f5f5f0] px-3 py-1 rounded-full border border-gray-200 font-medium">Step 1 of 4</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-5xl mx-auto px-6 py-8">
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Left Column - Categories */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="p-4 border-b border-gray-200">
-                <h2 className="font-semibold text-gray-900">Select a category</h2>
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-200">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="font-bold text-gray-900 text-lg">Select a category</h2>
               </div>
-              <div className="space-y-1">
+              <div className="space-y-1 p-2">
                 {categories.map((category) => {
                   const IconComponent = getIconComponent(category.icon_name)
                   const isSelected = selectedCategory === category.id
@@ -303,22 +299,24 @@ export default function SkillsSelectionPage() {
                     <button
                       key={category.id}
                       onClick={() => setSelectedCategory(category.id)}
-                      className={`w-full flex items-center px-4 py-3 text-left hover:bg-gray-50 transition-colors ${
-                        isSelected ? 'bg-blue-50 border-r-2 border-blue-600' : ''
+                      className={`w-full flex items-center px-4 py-4 text-left rounded-xl transition-all duration-200 ${
+                        isSelected 
+                          ? 'bg-gray-100 border-2 border-gray-300 shadow-sm' 
+                          : 'hover:bg-gray-50 border-2 border-transparent'
                       }`}
                     >
-                      <IconComponent className={`w-5 h-5 mr-3 ${
-                        isSelected ? 'text-blue-600' : 'text-gray-400'
+                      <IconComponent className={`w-6 h-6 mr-4 ${
+                        isSelected ? 'text-gray-700' : 'text-gray-400'
                       }`} />
                       <div className="flex-1">
-                        <div className={`text-sm font-medium ${
-                          isSelected ? 'text-blue-900' : 'text-gray-900'
+                        <div className={`text-sm font-semibold ${
+                          isSelected ? 'text-gray-900' : 'text-gray-700'
                         }`}>
                           {category.name}
                         </div>
                       </div>
-                      <ChevronRight className={`w-4 h-4 ${
-                        isSelected ? 'text-blue-600' : 'text-gray-400'
+                      <ChevronRight className={`w-5 h-5 ${
+                        isSelected ? 'text-gray-700' : 'text-gray-400'
                       }`} />
                     </button>
                   )
@@ -329,25 +327,28 @@ export default function SkillsSelectionPage() {
 
           {/* Middle Column - Skills */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="p-4 border-b border-gray-200">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-200">
+              <div className="p-6 border-b border-gray-200">
                 {selectedCategory ? (
                   <>
-                    <h2 className="font-semibold text-gray-900 mb-3">Available Skills</h2>
+                    <h2 className="font-bold text-gray-900 text-lg mb-4">Available Skills</h2>
                     <div className="relative">
-                      <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                      <Search className="w-5 h-5 absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
                       <input
                         type="text"
                         placeholder="Search skills..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
-                        className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 bg-white text-gray-900 placeholder-gray-500 transition-all duration-200"
                       />
                     </div>
                   </>
                 ) : (
-                  <div className="text-center py-8">
-                    <p className="text-gray-500">Select a category to start adding skills to your profile.</p>
+                  <div className="text-center py-12">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Briefcase className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <p className="text-gray-500 font-medium">Select a category to start adding skills to your profile.</p>
                   </div>
                 )}
               </div>
@@ -361,24 +362,26 @@ export default function SkillsSelectionPage() {
                       <button
                         key={skill.id}
                         onClick={() => toggleSkill(skill)}
-                        className={`w-full flex items-center justify-between px-4 py-3 text-left hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-b-0 ${
-                          isSelected ? 'bg-green-50' : ''
+                        className={`w-full flex items-center justify-between px-6 py-4 text-left hover:bg-gray-50 transition-all duration-200 border-b border-gray-100 last:border-b-0 ${
+                          isSelected ? 'bg-green-50 border-green-200' : ''
                         }`}
                       >
-                        <span className={`text-sm ${
-                          isSelected ? 'text-green-900 font-medium' : 'text-gray-900'
+                        <span className={`text-sm font-medium ${
+                          isSelected ? 'text-green-800' : 'text-gray-900'
                         }`}>
                           {skill.name}
                         </span>
                         {isSelected && (
-                          <Check className="w-4 h-4 text-green-600" />
+                          <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+                            <Check className="w-4 h-4 text-white" />
+                          </div>
                         )}
                       </button>
                     )
                   })}
                   
                   {filteredSkills.length === 0 && searchTerm && (
-                    <div className="p-4 text-center text-gray-500">
+                    <div className="p-6 text-center text-gray-500 font-medium">
                       No skills found for "{searchTerm}"
                     </div>
                   )}
@@ -389,39 +392,42 @@ export default function SkillsSelectionPage() {
 
           {/* Right Column - Selected Skills */}
           <div className="lg:col-span-1">
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-              <div className="p-4 border-b border-gray-200">
-                <h2 className="font-semibold text-gray-900">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-200">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="font-bold text-gray-900 text-lg">
                   {selectedSkills.length} skills selected
                 </h2>
-                <p className="text-sm text-gray-600 mt-1">
+                <p className="text-sm text-gray-600 mt-2 font-medium">
                   Select at least one skill to help us recommend customized jobs for you.
                 </p>
               </div>
               
-              <div className="p-4">
+              <div className="p-6">
                 {selectedSkills.length === 0 ? (
-                  <div className="text-center py-8 text-gray-500">
-                    <p>No skills selected yet.</p>
-                    <p className="text-sm mt-1">Choose from the categories to add skills.</p>
+                  <div className="text-center py-12 text-gray-500">
+                    <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Check className="w-8 h-8 text-gray-400" />
+                    </div>
+                    <p className="font-medium">No skills selected yet.</p>
+                    <p className="text-sm mt-2">Choose from the categories to add skills.</p>
                   </div>
                 ) : (
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {selectedSkills.map((skill) => {
                       const category = categories.find(c => c.id === skill.category_id)
                       
                       return (
                         <div
                           key={skill.id}
-                          className="flex items-center justify-between p-2 bg-gray-50 rounded-md"
+                          className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-gray-300 transition-all duration-200"
                         >
                           <div>
-                            <div className="text-sm font-medium text-gray-900">{skill.name}</div>
-                            <div className="text-xs text-gray-500">{category?.name}</div>
+                            <div className="text-sm font-semibold text-gray-900">{skill.name}</div>
+                            <div className="text-xs text-gray-500 font-medium">{category?.name}</div>
                           </div>
                           <button
                             onClick={() => removeSkill(skill.id)}
-                            className="text-gray-400 hover:text-red-500 transition-colors"
+                            className="w-6 h-6 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-full flex items-center justify-center transition-all duration-200 font-bold text-lg"
                           >
                             ×
                           </button>
@@ -437,39 +443,39 @@ export default function SkillsSelectionPage() {
 
         {/* Error Message */}
         {error && (
-          <div className="mt-6 bg-red-50 border border-red-200 rounded-md p-4">
-            <p className="text-red-800 text-sm">{error}</p>
+          <div className="mt-8 bg-red-50 border border-red-200 rounded-xl p-4">
+            <p className="text-red-800 text-sm font-medium">{error}</p>
           </div>
         )}
 
         {/* Navigation */}
-        <div className="mt-8 flex justify-between">
+        <div className="mt-10 flex justify-between items-center">
           <button
             onClick={() => router.back()}
-            className="flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+            className="flex items-center px-6 py-3 text-gray-600 hover:text-gray-800 transition-colors font-medium rounded-xl hover:bg-gray-50"
           >
-            <ArrowLeft className="w-4 h-4 mr-2" />
+            <ArrowLeft className="w-5 h-5 mr-2" />
             Back
           </button>
           
           <button
             onClick={handleContinue}
             disabled={saving || selectedSkills.length === 0}
-            className={`flex items-center px-6 py-3 rounded-md font-semibold transition-colors ${
+            className={`flex items-center px-8 py-4 rounded-xl font-bold text-base transition-all duration-200 transform ${
               saving || selectedSkills.length === 0
-                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
+                ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                : 'bg-gradient-to-r from-gray-700 to-gray-800 text-white hover:from-gray-800 hover:to-gray-900 hover:scale-105 shadow-lg hover:shadow-xl'
             }`}
           >
             {saving ? (
               <>
-                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
                 Saving...
               </>
             ) : (
               <>
                 Continue
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-5 h-5 ml-3" />
               </>
             )}
           </button>

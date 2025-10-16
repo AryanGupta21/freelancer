@@ -145,39 +145,35 @@ const handleContinue = async () => {
 }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-grey">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Tell us a bit about yourself</h1>
-              <p className="text-gray-600 mt-1">Fill out your profile for clients to better understand your services.</p>
-            </div>
-            <div className="text-sm text-gray-500">
-              Step 2 of 4
-            </div>
+      <div className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="max-w-4xl mx-auto px-6 py-6">
+          <div className="text-center">
+            <h1 className="text-3xl font-bold text-gray-900 mb-2 ">Tell us a bit about yourself</h1>
+            <p className="text-gray-600 mb-3">Fill out your profile for clients to better understand your services.</p>
+            <span className="text-sm text-gray-500 bg-[#f5f5f0] px-3 py-1 rounded-full border border-gray-200 font-medium">Step 2 of 4</span>
           </div>
         </div>
       </div>
 
-      <div className="max-w-2xl mx-auto px-4 py-8">
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <div className="max-w-3xl mx-auto px-6 py-8">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
           {/* Profile Image */}
           <div className="mb-8 text-center">
-            <div className="w-24 h-24 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
-              <Camera className="w-8 h-8 text-gray-400" />
+            <div className="w-28 h-28 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center border-4 border-white shadow-md">
+              <Camera className="w-10 h-10 text-gray-400" />
             </div>
-            <button className="text-blue-600 hover:text-blue-700 text-sm font-medium">
+            <button className="text-gray-700 hover:text-gray-900 text-sm font-semibold transition-colors underline decoration-2 underline-offset-2">
               Add profile photo
             </button>
           </div>
 
           {/* Form */}
-          <div className="space-y-6">
+          <div className="space-y-8">
             {/* Professional Title */}
             <div>
-              <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="title" className="block text-sm font-bold text-gray-900 mb-3">
                 What do you do? *
               </label>
               <input
@@ -188,14 +184,14 @@ const handleContinue = async () => {
                 value={formData.title}
                 onChange={handleInputChange}
                 placeholder="e.g. Full Stack Developer"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-4 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 bg-white text-gray-900 placeholder-gray-500 transition-all duration-200 text-lg"
               />
-              <p className="text-xs text-gray-500 mt-1">Write a one line description about yourself.</p>
+              <p className="text-sm text-gray-500 mt-2 font-medium">Write a one line description about yourself.</p>
             </div>
 
             {/* Description */}
             <div>
-              <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="description" className="block text-sm font-bold text-gray-900 mb-3">
                 Describe yourself *
               </label>
               <textarea
@@ -206,30 +202,33 @@ const handleContinue = async () => {
                 value={formData.description}
                 onChange={handleInputChange}
                 placeholder="Describe your top skills, strengths, and experiences. Provide more detail on the services you offer, things you're interested in working on, and what you like to do."
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-4 py-4 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 bg-white text-gray-900 placeholder-gray-500 transition-all duration-200 resize-none"
               />
             </div>
 
             {/* Professional Details */}
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="hourlyRate" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="hourlyRate" className="block text-sm font-bold text-gray-900 mb-3">
                   Hourly Rate (USD)
                 </label>
-                <input
-                  id="hourlyRate"
-                  name="hourlyRate"
-                  type="number"
-                  min="1"
-                  value={formData.hourlyRate}
-                  onChange={handleInputChange}
-                  placeholder="25"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                />
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-medium">$</span>
+                  <input
+                    id="hourlyRate"
+                    name="hourlyRate"
+                    type="number"
+                    min="1"
+                    value={formData.hourlyRate}
+                    onChange={handleInputChange}
+                    placeholder="25"
+                    className="w-full pl-8 pr-4 py-4 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 bg-white text-gray-900 placeholder-gray-500 transition-all duration-200"
+                  />
+                </div>
               </div>
 
               <div>
-                <label htmlFor="availability" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="availability" className="block text-sm font-bold text-gray-900 mb-3">
                   Hours per week
                 </label>
                 <input
@@ -241,14 +240,14 @@ const handleContinue = async () => {
                   value={formData.availability}
                   onChange={handleInputChange}
                   placeholder="40"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-4 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 bg-white text-gray-900 placeholder-gray-500 transition-all duration-200"
                 />
               </div>
             </div>
 
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="deliveryTime" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="deliveryTime" className="block text-sm font-bold text-gray-900 mb-3">
                   Typical delivery time (days)
                 </label>
                 <input
@@ -259,12 +258,12 @@ const handleContinue = async () => {
                   value={formData.deliveryTime}
                   onChange={handleInputChange}
                   placeholder="7"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-4 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 bg-white text-gray-900 placeholder-gray-500 transition-all duration-200"
                 />
               </div>
 
               <div>
-                <label htmlFor="experienceLevel" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="experienceLevel" className="block text-sm font-bold text-gray-900 mb-3">
                   Experience Level
                 </label>
                 <select
@@ -272,11 +271,11 @@ const handleContinue = async () => {
                   name="experienceLevel"
                   value={formData.experienceLevel}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-4 py-4 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 bg-white text-gray-900 transition-all duration-200 appearance-none cursor-pointer"
                 >
-                  <option value="beginner">Beginner (0-2 years)</option>
-                  <option value="intermediate">Intermediate (2-5 years)</option>
-                  <option value="expert">Expert (5+ years)</option>
+                  <option value="beginner" className="text-gray-900">Beginner (0-2 years)</option>
+                  <option value="intermediate" className="text-gray-900">Intermediate (2-5 years)</option>
+                  <option value="expert" className="text-gray-900">Expert (5+ years)</option>
                 </select>
               </div>
             </div>
@@ -284,39 +283,39 @@ const handleContinue = async () => {
 
           {/* Error Message */}
           {error && (
-            <div className="mt-6 bg-red-50 border border-red-200 rounded-md p-4">
-              <p className="text-red-800 text-sm">{error}</p>
+            <div className="mt-8 bg-red-50 border border-red-200 rounded-xl p-4">
+              <p className="text-red-800 text-sm font-medium">{error}</p>
             </div>
           )}
 
           {/* Navigation */}
-          <div className="mt-8 flex justify-between">
+          <div className="mt-10 flex justify-between items-center">
             <button
               onClick={() => router.back()}
-              className="flex items-center px-4 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+              className="flex items-center px-6 py-3 text-gray-600 hover:text-gray-800 transition-colors font-medium rounded-xl hover:bg-gray-50"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-5 h-5 mr-2" />
               Back
             </button>
             
             <button
               onClick={handleContinue}
               disabled={loading || !formData.title || !formData.description}
-              className={`flex items-center px-6 py-3 rounded-md font-semibold transition-colors ${
+              className={`flex items-center px-8 py-4 rounded-xl font-bold text-base transition-all duration-200 transform ${
                 loading || !formData.title || !formData.description
-                  ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-gradient-to-r from-gray-700 to-gray-800 text-white hover:from-gray-800 hover:to-gray-900 hover:scale-105 shadow-lg hover:shadow-xl'
               }`}
             >
               {loading ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                  <div className="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-3"></div>
                   Saving...
                 </>
               ) : (
                 <>
                   Complete Profile
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  <ArrowRight className="w-5 h-5 ml-3" />
                 </>
               )}
             </button>

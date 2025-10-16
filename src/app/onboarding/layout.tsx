@@ -10,16 +10,16 @@ export default function OnboardingLayout({
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Top Header */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Briefcase className="w-5 h-5 text-white" />
-              </div>
-              <span className="text-xl font-bold text-gray-900">FreelancePlatform</span>
-            </Link>
-            
+       <header className="bg-white border-b border-gray-100 sticky top-0 z-50 backdrop-blur-md bg-white/90">
+            <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="flex items-center justify-between h-20">
+                {/* Logo - Moved slightly right */}
+                <div className="flex items-center ml-4">
+                  <Link href="/" className="flex items-center space-x-3 group">
+                    <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Job Portal.AI</span>
+              </Link>
+            </div>
+
             <div className="text-sm text-gray-600">
               Setting up your freelancer profile...
             </div>

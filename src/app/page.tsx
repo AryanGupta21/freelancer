@@ -1,4 +1,3 @@
-// src/app/page.tsx - Fixed Public Homepage Marketplace (Fiverr-style)
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -6,10 +5,26 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { 
-  Search, Star, User, MapPin, Eye, Heart,
-  Code, Palette, Megaphone, PenTool, Camera,
-  Headphones, BarChart3, Globe, ChevronRight,
-  Play, Shield, Users, Award, Briefcase
+  Search, 
+  Star, 
+  MapPin, 
+  Clock, 
+  ChevronRight, 
+  Shield, 
+  Users, 
+  Award,
+  Palette,
+  Code,
+  Megaphone,
+  PenTool,
+  Camera,
+  Headphones,
+  BarChart3,
+  Briefcase,
+  Heart,
+  Eye,
+  User,
+  Globe
 } from 'lucide-react'
 
 interface ServiceListing {
@@ -36,7 +51,7 @@ interface ServiceListing {
 interface Category {
   id: string
   name: string
-  icon: any
+  icon: string
   services_count: number
   color: string
 }
@@ -212,62 +227,60 @@ export default function Homepage() {
 
       const allServices = [...realServices, ...mockServices]
       setFeaturedServices(allServices)
-
-      // Mock popular categories (you can make this dynamic later)
       const mockCategories: Category[] = [
         {
           id: 'graphics-design',
           name: 'Graphics & Design',
-          icon: Palette,
+          icon: '/images/categories/graphics-design.jpg',
           services_count: 1250,
           color: 'bg-purple-100 text-purple-600'
         },
         {
           id: 'programming-tech',
           name: 'Programming & Tech',
-          icon: Code,
+          icon: '/images/categories/programming-tech.jpg',
           services_count: 890,
           color: 'bg-blue-100 text-blue-600'
         },
         {
           id: 'digital-marketing',
           name: 'Digital Marketing',
-          icon: Megaphone,
+          icon: '/images/categories/digital-marketing.jpg',
           services_count: 650,
           color: 'bg-green-100 text-green-600'
         },
         {
           id: 'writing-translation',
           name: 'Writing & Translation',
-          icon: PenTool,
+          icon: '/images/categories/writing-translation.jpg',
           services_count: 780,
           color: 'bg-orange-100 text-orange-600'
         },
         {
           id: 'video-animation',
           name: 'Video & Animation',
-          icon: Camera,
+          icon: '/images/categories/video-animation.jpg',
           services_count: 420,
           color: 'bg-red-100 text-red-600'
         },
         {
           id: 'music-audio',
           name: 'Music & Audio',
-          icon: Headphones,
+          icon: '/images/categories/music-audio.jpg',
           services_count: 320,
           color: 'bg-indigo-100 text-indigo-600'
         },
         {
           id: 'data',
           name: 'Data',
-          icon: BarChart3,
+          icon: '/images/categories/data.jpg',
           services_count: 280,
           color: 'bg-yellow-100 text-yellow-600'
         },
         {
           id: 'business',
           name: 'Business',
-          icon: Briefcase,
+          icon: '/images/categories/business.jpg',
           services_count: 540,
           color: 'bg-pink-100 text-pink-600'
         }
@@ -306,35 +319,67 @@ export default function Homepage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navigation Header */}
-      <header className="border-b border-gray-200 sticky top-0 bg-white z-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            {/* Logo */}
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-                  <Globe className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-gray-900">FreelanceHub</span>
+      {/* Navigation Header - Updated to match login-page exactly */}
+      <header className="bg-white border-b border-gray-100 sticky top-0 z-50 backdrop-blur-md bg-white/90">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-20">
+            {/* Logo - Moved slightly right */}
+            <div className="flex items-center ml-4">
+              <Link href="/" className="flex items-center space-x-3 group">
+                <span className="text-xl font-bold bg-gradient-to-r from-gray-900 to-gray-700 bg-clip-text text-transparent">Job Portal.AI</span>
               </Link>
             </div>
 
             {/* Search Bar */}
-            <div className="hidden md:flex flex-1 max-w-xl mx-8">
-              <form onSubmit={handleSearch} className="w-full flex">
+            <div className="hidden lg:flex flex-1 max-w-md mx-8">
+              <form onSubmit={handleSearch} className="w-full flex group">
                 <div className="relative flex-1">
                   <input
                     type="text"
-                    placeholder="What service are you looking for today?"
+                    placeholder="What service are you looking for?"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-4 py-2.5 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                    className="w-full px-4 py-2.5 rounded-l-xl text-gray-700 placeholder-gray-500"
+                    style={{ 
+                      backgroundColor: '#f5f5f0',
+                      border: '1px solid #e5e7eb',
+                      outline: 'none !important',
+                      boxShadow: 'none !important',
+                      borderRight: 'none',
+                      accentColor: '#6b7280',
+                      caretColor: '#374151'
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.setProperty('border-color', '#d1d5db', 'important')
+                      e.target.style.setProperty('box-shadow', '0 0 0 1px #d1d5db', 'important')
+                      e.target.style.setProperty('outline', 'none', 'important')
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.setProperty('border-color', '#e5e7eb', 'important')
+                      e.target.style.setProperty('box-shadow', 'none', 'important')
+                    }}
                   />
+                  <style jsx>{`
+                    input:focus {
+                      outline: none !important;
+                      box-shadow: 0 0 0 1px #d1d5db !important;
+                      border-color: #d1d5db !important;
+                    }
+                    input:focus-visible {
+                      outline: none !important;
+                      box-shadow: 0 0 0 1px #d1d5db !important;
+                    }
+                  `}</style>
                 </div>
                 <button
                   type="submit"
-                  className="px-6 py-2.5 bg-green-600 text-white rounded-r-md hover:bg-green-700 transition-colors"
+                  className="px-4 py-2.5 rounded-r-xl text-gray-600 hover:text-gray-800"
+                  style={{ 
+                    backgroundColor: '#f5f5f0',
+                    border: '1px solid #e5e7eb',
+                    borderLeft: 'none',
+                    outline: 'none'
+                  }}
                 >
                   <Search className="w-5 h-5" />
                 </button>
@@ -342,22 +387,16 @@ export default function Homepage() {
             </div>
 
             {/* Auth Buttons */}
-            <div className="flex items-center space-x-4">
-              <Link
-                href="/auth/login?type=freelancer"
-                className="text-gray-700 hover:text-green-600 font-medium transition-colors"
-              >
-                Become a Seller
-              </Link>
+            <div className="flex items-center space-x-3">
               <Link
                 href="/auth/login?type=client"
-                className="px-4 py-2 border border-green-600 text-green-600 rounded-md hover:bg-green-50 transition-colors"
+                className="inline-flex items-center px-6 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-full hover:bg-black transition-all duration-200 hover:shadow-lg hover:scale-105"
               >
                 Sign In
               </Link>
               <Link
-                href="/auth/signup"
-                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+                href="/auth/login?type=freelancer"
+                className="inline-flex items-center px-6 py-2.5 bg-gray-900 text-white text-sm font-medium rounded-full hover:bg-black transition-all duration-200 hover:shadow-lg hover:scale-105"
               >
                 Join
               </Link>
@@ -367,40 +406,47 @@ export default function Homepage() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-green-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-20">
+      <section className="text-gray-900 relative overflow-hidden" style={{ backgroundColor: '#f5f5f0' }}>
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='0.1'%3E%3Ccircle cx='30' cy='30' r='1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
+        </div>
+        
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-20 relative">
           <div className="text-center">
-            <h1 className="text-5xl font-bold mb-6">
-              Find the perfect <span className="text-green-200">freelance</span> services for your business
+            <h1 className="text-5xl font-bold mb-6 leading-tight bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 bg-clip-text text-transparent">
+              Find the perfect freelance services for your business
             </h1>
-            <p className="text-xl text-green-100 mb-10 max-w-3xl mx-auto">
+            <p className="text-xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
               Millions of people use FreelanceHub to turn their ideas into reality. Join the world's largest freelance marketplace.
             </p>
             
             {/* Mobile Search */}
             <div className="max-w-2xl mx-auto">
-              <form onSubmit={handleSearch} className="flex">
+              <form onSubmit={handleSearch} className="flex group shadow-xl rounded-xl overflow-hidden">
                 <div className="flex-1">
                   <input
                     type="text"
                     placeholder="Try 'logo design'"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-full px-6 py-4 rounded-l-lg text-gray-900 text-lg focus:outline-none focus:ring-2 focus:ring-green-300"
+                    className="w-full px-6 py-4 text-gray-900 text-lg focus:outline-none bg-white border-0 placeholder-gray-400"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="px-8 py-4 bg-green-700 hover:bg-green-800 rounded-r-lg transition-colors"
+                  className="px-8 py-4 transition-all duration-200 text-white bg-gray-900 hover:bg-black hover:shadow-lg"
                 >
-                  <Search className="w-6 h-6" />
+                  <Search className="w-6 h-6 transition-transform duration-200 group-hover:scale-110" />
                 </button>
               </form>
             </div>
 
             {/* Popular Searches */}
             <div className="mt-8">
-              <span className="text-green-200">Popular:</span>
+              <span className="text-gray-600 text-sm font-medium">Popular:</span>
               {['Website Design', 'WordPress', 'Logo Design', 'Video Editing'].map((term) => (
                 <button
                   key={term}
@@ -408,7 +454,7 @@ export default function Homepage() {
                     setSearchQuery(term)
                     router.push(`/search?q=${encodeURIComponent(term)}`)
                   }}
-                  className="ml-4 px-4 py-2 border border-green-400 rounded-full hover:bg-green-500 transition-colors text-sm"
+                  className="ml-4 px-4 py-2 bg-white/70 backdrop-blur-sm text-gray-700 rounded-full hover:bg-white hover:shadow-md transition-all duration-200 text-sm font-medium border border-gray-200/50"
                 >
                   {term}
                 </button>
@@ -419,37 +465,49 @@ export default function Homepage() {
       </section>
 
       {/* Popular Categories */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
+      <section className="py-20 bg-white">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Popular professional services</h2>
             <p className="text-lg text-gray-600">Browse services by category</p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-6">
-            {popularCategories.map((category) => {
-              const IconComponent = category.icon
-              return (
-                <Link
-                  key={category.id}
-                  href={`/category/${category.id}`}
-                  className="group p-6 bg-white rounded-lg border border-gray-200 hover:shadow-md transition-all hover:border-green-300"
-                >
-                  <div className={`w-12 h-12 ${category.color} rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform`}>
-                    <IconComponent className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900 mb-1 text-sm">{category.name}</h3>
-                  <p className="text-xs text-gray-500">{category.services_count} services</p>
-                </Link>
-              )
-            })}
+          <div className="grid grid-cols-4 gap-12">
+            {popularCategories.map((category) => (
+              <Link
+                key={category.id}
+                href={`/category/${category.id}`}
+                className="group text-center transform transition-all duration-200 hover:scale-105"
+              >
+                <div className="relative w-24 h-24 rounded-2xl overflow-hidden mb-4 mx-auto shadow-lg group-hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-gray-100 to-gray-200">
+                  <img 
+                    src={category.icon} 
+                    alt={category.name}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none'
+                      e.currentTarget.parentElement!.innerHTML = `<div class="w-full h-full ${category.color} rounded-2xl flex items-center justify-center"><span class="text-sm font-bold">${category.name.split(' ')[0]}</span></div>`
+                    }}
+                  />
+                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-all duration-300 rounded-2xl"></div>
+                </div>
+                <h3 className="font-medium text-gray-900 text-base group-hover:text-green-600 transition-colors duration-200">{category.name}</h3>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Featured Services */}
-      <section className="py-16">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-16 relative overflow-hidden" style={{ backgroundColor: '#f5f5f0' }}>
+        {/* Subtle background pattern */}
+        <div className="absolute inset-0 opacity-3">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23000000' fill-opacity='0.05'%3E%3Cpath d='M20 20c0 5.5-4.5 10-10 10s-10-4.5-10-10 4.5-10 10-10 10 4.5 10 10zm10 0c0 5.5-4.5 10-10 10s-10-4.5-10-10 4.5-10 10-10 10 4.5 10 10z'/%3E%3C/g%3E%3C/svg%3E")`
+          }}></div>
+        </div>
+        
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-2">Featured services</h2>
@@ -457,22 +515,11 @@ export default function Homepage() {
             </div>
             <Link
               href="/search?featured=true"
-              className="flex items-center text-green-600 hover:text-green-700 font-medium"
+              className="flex items-center text-black hover:text-green-600 font-medium transition-colors duration-200 group"
             >
               View all featured
-              <ChevronRight className="w-4 h-4 ml-1" />
+              <ChevronRight className="w-4 h-4 ml-1 transition-transform duration-200 group-hover:translate-x-1" />
             </Link>
-            
-            {/* Manual Refresh Button (for testing) */}
-            <button
-              onClick={() => {
-                setLoading(true)
-                loadHomepageData()
-              }}
-              className="ml-4 px-4 py-2 text-sm bg-green-100 text-green-700 rounded-md hover:bg-green-200 transition-colors"
-            >
-              {loading ? 'Refreshing...' : 'Refresh'}
-            </button>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -481,181 +528,122 @@ export default function Homepage() {
                 <Link
                   key={service.id}
                   href={service.id.startsWith('mock-') ? '#' : `/freelancer/${service.id}`}
-                  className="group bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow"
+                  className="group bg-white rounded-2xl shadow-sm border border-gray-200/50 overflow-hidden hover:shadow-xl hover:border-gray-300/50 transition-all duration-300 transform hover:-translate-y-1"
                 >
                   {/* Service Image */}
-                  <div className="relative h-48 bg-gray-200">
+                  <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                     {service.image_url ? (
                       <img
                         src={service.image_url}
                         alt={service.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
                         <Eye className="w-12 h-12 text-gray-400" />
                       </div>
                     )}
                     
                     {/* Favorite Button */}
-                    <button className="absolute top-3 right-3 w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 transition-colors">
-                      <Heart className="w-4 h-4 text-gray-600" />
+                    <button className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white hover:scale-110 transition-all duration-200">
+                      <Heart className="w-4 h-4 text-gray-600 hover:text-red-500 transition-colors duration-200" />
                     </button>
                     
                     {/* Real Freelancer Badge */}
                     {!service.id.startsWith('mock-') && (
-                      <div className="absolute top-3 left-3 px-2 py-1 bg-green-600 text-white text-xs rounded-full">
+                      <div className="absolute top-3 left-3 px-3 py-1 bg-gradient-to-r from-green-500 to-green-600 text-white text-xs rounded-full font-medium shadow-lg">
                         Live
                       </div>
                     )}
+                    
+                    {/* Overlay gradient */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
 
                   {/* Service Content */}
-                  <div className="p-4">
+                  <div className="p-5">
                     {/* Freelancer Info */}
-                    <div className="flex items-center mb-3">
-                      {service.freelancer.avatar_url ? (
-                        <img
-                          src={service.freelancer.avatar_url}
-                          alt={service.freelancer.name}
-                          className="w-8 h-8 rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center text-xs font-medium">
-                          {getInitials(service.freelancer.name)}
-                        </div>
-                      )}
-                      <div className="ml-3">
-                        <p className="text-sm font-medium text-gray-900">{service.freelancer.name}</p>
-                        <p className="text-xs text-gray-500">{service.freelancer.level}</p>
-                      </div>
-                    </div>
-
-                    {/* Service Title */}
-                    <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-green-600 transition-colors">
-                      {service.title}
-                    </h3>
-                    
-                    {/* Description */}
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                      {service.description}
-                    </p>
-
-                    {/* Rating */}
-                    <div className="flex items-center mb-3">
+                    <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center">
-                        <Star className="w-4 h-4 text-yellow-400 fill-current" />
-                        <span className="text-sm font-medium text-gray-900 ml-1">{service.rating.toFixed(1)}</span>
-                        <span className="text-sm text-gray-500 ml-1">({service.reviews_count})</span>
+                        {service.freelancer.avatar_url ? (
+                          <img
+                            src={service.freelancer.avatar_url}
+                            alt={service.freelancer.name}
+                            className="w-9 h-9 rounded-full object-cover border-2 border-white shadow-sm"
+                          />
+                        ) : (
+                          <div className="w-9 h-9 bg-gradient-to-br from-gray-400 to-gray-500 rounded-full flex items-center justify-center text-xs font-medium text-white shadow-sm">
+                            {getInitials(service.freelancer.name)}
+                          </div>
+                        )}
+                        <div className="ml-3">
+                          <p className="text-sm font-semibold text-gray-900">{service.freelancer.name}</p>
+                          <p className="text-xs text-gray-500 font-medium">{service.freelancer.level}</p>
+                        </div>
                       </div>
                       {service.freelancer.country && (
-                        <div className="flex items-center ml-auto text-xs text-gray-500">
+                        <div className="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
                           <MapPin className="w-3 h-3 mr-1" />
                           {service.freelancer.country}
                         </div>
                       )}
                     </div>
 
+                    {/* Service Title */}
+                    <h3 className="font-semibold text-gray-900 mb-3 line-clamp-2 group-hover:text-green-600 transition-colors duration-200 leading-snug">
+                      {service.title}
+                    </h3>
+                    
+                    {/* Rating */}
+                    <div className="flex items-center mb-4">
+                      <div className="flex items-center bg-yellow-50 px-2 py-1 rounded-full">
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                        <span className="text-sm font-semibold text-gray-900 ml-1">{service.rating.toFixed(1)}</span>
+                        <span className="text-sm text-gray-500 ml-1">({service.reviews_count})</span>
+                      </div>
+                    </div>
+
                     {/* Price and Delivery */}
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between pt-3 border-t border-gray-100">
+                      <div className="flex items-center text-sm text-gray-500">
+                        <Clock className="w-4 h-4 mr-1" />
+                        {service.delivery_days} days
+                      </div>
                       <div className="text-right">
-                        <p className="text-xs text-gray-500 uppercase">Starting at</p>
-                        <p className="text-lg font-bold text-gray-900">${service.price_from}</p>
+                        <p className="text-xs text-gray-500 uppercase tracking-wide font-medium">Starting at</p>
+                        <p className="text-xl font-bold text-gray-900">${service.price_from}</p>
                       </div>
                     </div>
                   </div>
                 </Link>
               ))
             ) : (
-              <div className="col-span-full text-center py-12">
-                <User className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No freelancers available yet</h3>
-                <p className="text-gray-600 mb-6">
-                  Be the first to join as a freelancer and start offering your services!
-                </p>
-                <Link
-                  href="/auth/signup?type=freelancer"
-                  className="inline-flex items-center px-6 py-3 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
-                >
-                  Become a Freelancer
-                </Link>
+              <div className="col-span-full text-center py-16">
+                <div className="bg-white rounded-2xl p-12 shadow-sm border border-gray-200/50 max-w-md mx-auto">
+                  <div className="w-20 h-20 bg-gradient-to-br from-gray-200 to-gray-300 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                    <User className="w-10 h-10 text-gray-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">No freelancers available yet</h3>
+                  <p className="text-gray-600 mb-8 leading-relaxed">
+                    Be the first to join as a freelancer and start offering your services!
+                  </p>
+                  <Link
+                    href="/auth/signup?type=freelancer"
+                    className="inline-flex items-center px-8 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-xl hover:from-green-700 hover:to-green-800 transition-all duration-200 font-medium hover:shadow-lg hover:scale-105"
+                  >
+                    Become a Freelancer
+                  </Link>
+                </div>
               </div>
             )}
           </div>
         </div>
       </section>
 
-      {/* Trust & Safety Section */}
-      <section className="py-16 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-            <div>
-              <Shield className="w-12 h-12 text-green-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Secure payments</h3>
-              <p className="text-gray-400">Your payment is protected until you approve the work</p>
-            </div>
-            <div>
-              <Users className="w-12 h-12 text-green-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">24/7 support</h3>
-              <p className="text-gray-400">Get help when you need it from our customer success team</p>
-            </div>
-            <div>
-              <Award className="w-12 h-12 text-green-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold mb-2">Quality guarantee</h3>
-              <p className="text-gray-400">Get refund if the work doesn't meet your expectations</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="bg-white border-t border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-2 mb-4">
-                <div className="w-8 h-8 bg-green-600 rounded-lg flex items-center justify-center">
-                  <Globe className="w-5 h-5 text-white" />
-                </div>
-                <span className="text-xl font-bold text-gray-900">FreelanceHub</span>
-              </div>
-              <p className="text-gray-600">The world's largest freelance marketplace</p>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Categories</h4>
-              <ul className="space-y-2 text-gray-600">
-                <li><Link href="/category/graphics-design" className="hover:text-green-600">Graphics & Design</Link></li>
-                <li><Link href="/category/programming-tech" className="hover:text-green-600">Programming & Tech</Link></li>
-                <li><Link href="/category/digital-marketing" className="hover:text-green-600">Digital Marketing</Link></li>
-                <li><Link href="/category/writing-translation" className="hover:text-green-600">Writing & Translation</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-4">About</h4>
-              <ul className="space-y-2 text-gray-600">
-                <li><Link href="/about" className="hover:text-green-600">About Us</Link></li>
-                <li><Link href="/careers" className="hover:text-green-600">Careers</Link></li>
-                <li><Link href="/press" className="hover:text-green-600">Press & News</Link></li>
-                <li><Link href="/partnerships" className="hover:text-green-600">Partnerships</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="font-semibold text-gray-900 mb-4">Support</h4>
-              <ul className="space-y-2 text-gray-600">
-                <li><Link href="/help" className="hover:text-green-600">Help & Support</Link></li>
-                <li><Link href="/trust-safety" className="hover:text-green-600">Trust & Safety</Link></li>
-                <li><Link href="/terms" className="hover:text-green-600">Terms of Service</Link></li>
-                <li><Link href="/privacy" className="hover:text-green-600">Privacy Policy</Link></li>
-              </ul>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-200 mt-8 pt-8 text-center text-gray-600">
-            <p>&copy; 2024 FreelanceHub. All rights reserved.</p>
-          </div>
+      <footer className="bg-gradient-to-r from-gray-900 to-black border-t border-gray-800 text-center py-8">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">             
+          <p className="text-gray-400">&copy; 2024 FreelanceHub. All rights reserved.</p>
         </div>
       </footer>
     </div>

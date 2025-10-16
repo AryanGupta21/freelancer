@@ -247,9 +247,9 @@ export default function BrowseFreelancers() {
   }
 
   const getSkillColor = (proficiency: number) => {
-    if (proficiency >= 4) return 'bg-green-100 text-green-800'
-    if (proficiency >= 3) return 'bg-blue-100 text-blue-800'
-    return 'bg-gray-100 text-gray-800'
+    if (proficiency >= 4) return 'bg-green-50 text-green-700 border-green-200'
+    if (proficiency >= 3) return 'bg-gray-50 text-gray-700 border-gray-200'
+    return 'bg-gray-100 text-gray-600 border-gray-200'
   }
 
   if (loading) {
@@ -264,15 +264,15 @@ export default function BrowseFreelancers() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#f5f5f0]">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200">
+      <div className="bg-white border-b border-gray-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">
+            <h1 className="text-4xl font-bold text-gray-900 mb-3">
               Find the Perfect Freelancer
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-xl text-gray-600">
               Browse talented professionals ready to help with your projects
             </p>
           </div>
@@ -286,27 +286,27 @@ export default function BrowseFreelancers() {
                 placeholder="Search by name, skills, or description..."
                 value={filters.search}
                 onChange={(e) => updateFilter('search', e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 bg-white text-gray-900 placeholder-gray-600 transition-all duration-200"
               />
             </div>
             
             <button
               onClick={() => setShowFilters(!showFilters)}
-              className="flex items-center px-6 py-3 bg-gray-100 border border-gray-300 rounded-md hover:bg-gray-200 transition-colors"
+              className="flex items-center px-6 py-3 bg-[#f5f5f0] border border-gray-300 rounded-xl hover:bg-gray-100 transition-all duration-200 font-medium text-gray-800"
             >
-              <Filter className="w-5 h-5 mr-2" />
+              <Filter className="w-5 h-5 mr-2 text-gray-700" />
               Filters
-              <ChevronDown className={`w-4 h-4 ml-2 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-4 h-4 ml-2 transition-transform duration-200 text-gray-700 ${showFilters ? 'rotate-180' : ''}`} />
             </button>
           </div>
 
           {/* Filters Panel */}
           {showFilters && (
-            <div className="mt-6 p-6 bg-gray-50 border border-gray-200 rounded-lg">
+            <div className="mt-6 p-6 bg-white border border-gray-200 rounded-xl shadow-lg">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Rate Range */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Hourly Rate ($)
                   </label>
                   <div className="flex space-x-2">
@@ -315,38 +315,38 @@ export default function BrowseFreelancers() {
                       placeholder="Min"
                       value={filters.minRate}
                       onChange={(e) => updateFilter('minRate', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white text-gray-900 placeholder-gray-600 transition-all duration-200"
                     />
                     <input
                       type="number"
                       placeholder="Max"
                       value={filters.maxRate}
                       onChange={(e) => updateFilter('maxRate', e.target.value)}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white text-gray-900 placeholder-gray-600 transition-all duration-200"
                     />
                   </div>
                 </div>
 
                 {/* Experience Level */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Experience Level
                   </label>
-                  <select
+                 <select
                     value={filters.experienceLevel}
                     onChange={(e) => updateFilter('experienceLevel', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white text-gray-900 transition-all duration-200"
                   >
-                    <option value="">Any Level</option>
-                    <option value="beginner">Beginner</option>
-                    <option value="intermediate">Intermediate</option>
-                    <option value="expert">Expert</option>
+                    <option value="" className="text-gray-600">Any Level</option>
+                    <option value="beginner" className="text-gray-900">Beginner</option>
+                    <option value="intermediate" className="text-gray-900">Intermediate</option>
+                    <option value="expert" className="text-gray-900">Expert</option>
                   </select>
                 </div>
 
                 {/* Location */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Location
                   </label>
                   <input
@@ -354,13 +354,13 @@ export default function BrowseFreelancers() {
                     placeholder="City, Country"
                     value={filters.location}
                     onChange={(e) => updateFilter('location', e.target.value)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white text-gray-900 placeholder-gray-600 transition-all duration-200"
                   />
                 </div>
 
                 {/* Skills */}
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Skills
                   </label>
                   <select
@@ -370,11 +370,11 @@ export default function BrowseFreelancers() {
                         e.target.value = ''
                       }
                     }}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white text-gray-900 transition-all duration-200"
                   >
-                    <option value="">Add skill filter</option>
+                    <option value="" className="text-gray-600">Add skill filter</option>
                     {availableSkills.map(skill => (
-                      <option key={skill} value={skill}>{skill}</option>
+                      <option key={skill} value={skill} className="text-gray-900">{skill}</option>
                     ))}
                   </select>
                 </div>
@@ -387,12 +387,12 @@ export default function BrowseFreelancers() {
                     {filters.skills.map(skill => (
                       <span
                         key={skill}
-                        className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full"
+                        className="inline-flex items-center px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full border border-gray-300"
                       >
                         {skill}
                         <button
                           onClick={() => removeSkillFilter(skill)}
-                          className="ml-2 text-blue-600 hover:text-blue-800"
+                          className="ml-2 text-gray-600 hover:text-gray-800 transition-colors"
                         >
                           <X className="w-3 h-3" />
                         </button>
@@ -403,14 +403,14 @@ export default function BrowseFreelancers() {
               )}
 
               {/* Filter Actions */}
-              <div className="mt-6 flex justify-between">
+              <div className="mt-6 flex justify-between items-center">
                 <button
                   onClick={clearFilters}
-                  className="text-gray-600 hover:text-gray-800 text-sm"
+                  className="text-gray-700 hover:text-gray-900 text-sm font-medium transition-colors"
                 >
                   Clear all filters
                 </button>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-700 font-medium">
                   {filteredFreelancers.length} freelancer{filteredFreelancers.length !== 1 ? 's' : ''} found
                 </span>
               </div>
@@ -427,7 +427,7 @@ export default function BrowseFreelancers() {
               <Link
                 key={freelancer.id}
                 href={`/freelancer/${freelancer.id}`}
-                className="bg-white rounded-lg border border-gray-200 p-6 hover:shadow-md transition-shadow"
+                className="bg-white rounded-xl border border-gray-200 p-6 hover:shadow-lg transition-all duration-300 transform hover:scale-[1.02] hover:border-gray-300"
               >
                 {/* Profile Header */}
                 <div className="flex items-center space-x-4 mb-4">
@@ -435,20 +435,20 @@ export default function BrowseFreelancers() {
                     <img
                       src={freelancer.profile_image_url}
                       alt={`${freelancer.first_name} ${freelancer.last_name}`}
-                      className="w-16 h-16 rounded-full object-cover"
+                      className="w-16 h-16 rounded-full object-cover border-2 border-gray-100"
                     />
                   ) : (
-                    <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl font-bold">
+                    <div className="w-16 h-16 bg-gradient-to-br from-gray-600 to-gray-700 rounded-full flex items-center justify-center text-white text-xl font-bold shadow-md">
                       {getInitials(freelancer.first_name, freelancer.last_name)}
                     </div>
                   )}
                   
                   <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-bold text-gray-900 text-lg">
                       {freelancer.first_name} {freelancer.last_name}
                     </h3>
                     {freelancer.title && (
-                      <p className="text-blue-600 text-sm font-medium">{freelancer.title}</p>
+                      <p className="text-gray-700 text-sm font-semibold">{freelancer.title}</p>
                     )}
                     {(freelancer.city || freelancer.country) && (
                       <div className="flex items-center text-gray-500 text-sm mt-1">
@@ -464,7 +464,7 @@ export default function BrowseFreelancers() {
 
                 {/* Description */}
                 {freelancer.description && (
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
                     {freelancer.description}
                   </p>
                 )}
@@ -476,13 +476,13 @@ export default function BrowseFreelancers() {
                       {freelancer.skills.slice(0, 4).map((skill, index) => (
                         <span
                           key={index}
-                          className={`px-2 py-1 text-xs rounded-full ${getSkillColor(skill.proficiency_level)}`}
+                          className={`px-3 py-1 text-xs font-medium rounded-full border ${getSkillColor(skill.proficiency_level)}`}
                         >
                           {skill.name}
                         </span>
                       ))}
                       {freelancer.skills.length > 4 && (
-                        <span className="px-2 py-1 text-xs rounded-full bg-gray-100 text-gray-600">
+                        <span className="px-3 py-1 text-xs font-medium rounded-full bg-gray-100 text-gray-600 border border-gray-200">
                           +{freelancer.skills.length - 4}
                         </span>
                       )}
@@ -491,10 +491,10 @@ export default function BrowseFreelancers() {
                 )}
 
                 {/* Stats */}
-                <div className="flex items-center justify-between text-sm text-gray-600">
+                <div className="flex items-center justify-between text-sm text-gray-600 mb-3">
                   <div className="flex items-center space-x-4">
                     {freelancer.preferred_rate && (
-                      <div className="flex items-center">
+                      <div className="flex items-center font-medium">
                         <DollarSign className="w-4 h-4 mr-1" />
                         ${freelancer.preferred_rate}/hr
                       </div>
@@ -516,9 +516,9 @@ export default function BrowseFreelancers() {
 
                 {/* Languages */}
                 {freelancer.languages && freelancer.languages.length > 0 && (
-                  <div className="mt-3 pt-3 border-t border-gray-100">
+                  <div className="mb-3 pb-3 border-b border-gray-100">
                     <div className="flex flex-wrap gap-1">
-                      <span className="text-xs text-gray-500">Languages:</span>
+                      <span className="text-xs text-gray-500 font-medium">Languages:</span>
                       {freelancer.languages.slice(0, 3).map((lang, index) => (
                         <span key={index} className="text-xs text-gray-700">
                           {lang}{index < Math.min(freelancer.languages!.length - 1, 2) ? ', ' : ''}
@@ -534,35 +534,35 @@ export default function BrowseFreelancers() {
                 )}
 
                 {/* Availability Indicator */}
-                <div className="mt-3 pt-3 border-t border-gray-100">
-                  <div className="flex items-center justify-between">
-                    <div className={`flex items-center text-sm ${freelancer.is_available ? 'text-green-600' : 'text-red-600'}`}>
-                      <div className={`w-2 h-2 rounded-full mr-2 ${freelancer.is_available ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                      {freelancer.is_available ? 'Available' : 'Unavailable'}
-                    </div>
-                    
-                    <div className="flex items-center text-blue-600 text-sm font-medium">
-                      <Eye className="w-4 h-4 mr-1" />
-                      View Profile
-                    </div>
+                <div className="flex items-center justify-between">
+                  <div className={`flex items-center text-sm font-medium ${freelancer.is_available ? 'text-green-600' : 'text-red-600'}`}>
+                    <div className={`w-2 h-2 rounded-full mr-2 ${freelancer.is_available ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                    {freelancer.is_available ? 'Available' : 'Unavailable'}
+                  </div>
+                  
+                  <div className="flex items-center text-gray-700 text-sm font-semibold">
+                    <Eye className="w-4 h-4 mr-1" />
+                    View Profile
                   </div>
                 </div>
               </Link>
             ))}
           </div>
         ) : (
-          <div className="text-center py-12">
-            <User className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No freelancers found</h3>
-            <p className="text-gray-600 mb-6">
-              Try adjusting your search criteria or clearing some filters
-            </p>
-            <button
-              onClick={clearFilters}
-              className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
-              Clear Filters
-            </button>
+          <div className="text-center py-16">
+            <div className="bg-white rounded-xl p-8 max-w-md mx-auto shadow-lg">
+              <User className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-xl font-bold text-gray-900 mb-2">No freelancers found</h3>
+              <p className="text-gray-600 mb-6 leading-relaxed">
+                Try adjusting your search criteria or clearing some filters
+              </p>
+              <button
+                onClick={clearFilters}
+                className="px-6 py-3 bg-gradient-to-r from-gray-600 to-gray-700 text-white rounded-xl hover:from-gray-700 hover:to-gray-800 transition-all duration-200 font-semibold transform hover:scale-105"
+              >
+                Clear Filters
+              </button>
+            </div>
           </div>
         )}
       </div>
