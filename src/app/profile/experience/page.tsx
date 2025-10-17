@@ -5,8 +5,8 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { 
-  ArrowLeft, Plus, Edit, Trash2, Calendar, MapPin, 
-  Building, Save, X, CheckCircle, AlertCircle 
+  ArrowLeft, Plus, Edit, Trash2, Briefcase, MapPin, 
+  Calendar, Save, X, CheckCircle, AlertCircle 
 } from 'lucide-react'
 
 interface WorkExperience {
@@ -157,38 +157,37 @@ export default function WorkExperiencePage() {
       }
 
       if (editingExperience) {
-        // Update existing experience
-        const { error: updateError } = await supabase
+        const { data, error } = await supabase
           .from('work_experiences')
           .update(experienceData)
           .eq('id', editingExperience.id)
+          .select()
+          .single()
 
-        if (updateError) throw updateError
+        if (error) throw error
 
-        setExperiences(prev => prev.map(exp => 
-          exp.id === editingExperience.id 
-            ? { ...exp, ...experienceData }
-            : exp
-        ))
+        setExperiences(prev => 
+          prev.map(exp => exp.id === editingExperience.id ? data : exp)
+        )
       } else {
-        // Create new experience
-        const { data: newExperience, error: insertError } = await supabase
+        const { data, error } = await supabase
           .from('work_experiences')
           .insert(experienceData)
           .select()
           .single()
 
-        if (insertError) throw insertError
-        setExperiences(prev => [newExperience, ...prev])
+        if (error) throw error
+
+        setExperiences(prev => [data, ...prev])
       }
 
       setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
       resetForm()
+      setTimeout(() => setSuccess(false), 3000)
 
     } catch (err) {
       console.error('Error saving experience:', err)
-      setError(err instanceof Error ? err.message : 'Failed to save experience')
+      setError('Failed to save work experience')
     } finally {
       setSaving(false)
     }
@@ -206,12 +205,9 @@ export default function WorkExperiencePage() {
       if (error) throw error
 
       setExperiences(prev => prev.filter(exp => exp.id !== experienceId))
-      setSuccess(true)
-      setTimeout(() => setSuccess(false), 3000)
-
     } catch (err) {
       console.error('Error deleting experience:', err)
-      setError('Failed to delete experience')
+      setError('Failed to delete work experience')
     }
   }
 
@@ -231,17 +227,17 @@ export default function WorkExperiencePage() {
     const diffMonths = Math.floor((diffTime % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30))
     
     if (diffYears > 0) {
-      return `${diffYears} year${diffYears > 1 ? 's' : ''} ${diffMonths} month${diffMonths !== 1 ? 's' : ''}`
+      return `${diffYears} year${diffYears > 1 ? 's' : ''} ${diffMonths > 0 ? `${diffMonths} month${diffMonths > 1 ? 's' : ''}` : ''}`
     } else {
-      return `${diffMonths} month${diffMonths !== 1 ? 's' : ''}`
+      return `${Math.max(1, diffMonths)} month${diffMonths > 1 ? 's' : ''}`
     }
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaf8] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading work experience...</p>
         </div>
       </div>
@@ -249,10 +245,10 @@ export default function WorkExperiencePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fafaf8]">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button
@@ -263,12 +259,12 @@ export default function WorkExperiencePage() {
               </button>
               <div>
                 <h1 className="text-2xl font-bold text-gray-900">Work Experience</h1>
-                <p className="text-gray-600 mt-1">Add your professional work history</p>
+                <p className="text-gray-600 mt-1">Add your professional work history and accomplishments</p>
               </div>
             </div>
             <button
               onClick={() => setShowForm(true)}
-              className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              className="flex items-center px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Experience
@@ -277,7 +273,7 @@ export default function WorkExperiencePage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Success Message */}
         {success && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-md p-4 flex items-center">
@@ -294,14 +290,14 @@ export default function WorkExperiencePage() {
           </div>
         )}
 
-        {/* Form Modal */}
+        {/* Experience Form Modal */}
         {showForm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-semibold text-gray-900">
-                    {editingExperience ? 'Edit Experience' : 'Add Work Experience'}
+                    {editingExperience ? 'Edit Work Experience' : 'Add Work Experience'}
                   </h2>
                   <button
                     onClick={resetForm}
@@ -312,32 +308,30 @@ export default function WorkExperiencePage() {
                 </div>
 
                 <div className="space-y-6">
-                  <div className="grid md:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Job Title *
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.job_title}
-                        onChange={(e) => setFormData(prev => ({ ...prev, job_title: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="e.g. Senior Software Developer"
-                      />
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Job Title *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.job_title}
+                      onChange={(e) => setFormData(prev => ({ ...prev, job_title: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                      placeholder="e.g. Senior Software Engineer"
+                    />
+                  </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Company Name *
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.company_name}
-                        onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="e.g. Tech Corporation"
-                      />
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Company Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.company_name}
+                      onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                      placeholder="e.g. Google Inc."
+                    />
                   </div>
 
                   <div className="grid md:grid-cols-2 gap-4">
@@ -348,7 +342,7 @@ export default function WorkExperiencePage() {
                       <select
                         value={formData.employment_type}
                         onChange={(e) => setFormData(prev => ({ ...prev, employment_type: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       >
                         {employmentTypes.map(type => (
                           <option key={type.value} value={type.value}>
@@ -366,8 +360,8 @@ export default function WorkExperiencePage() {
                         type="text"
                         value={formData.location}
                         onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="e.g. San Francisco, CA or Remote"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                        placeholder="e.g. San Francisco, CA"
                       />
                     </div>
                   </div>
@@ -381,7 +375,7 @@ export default function WorkExperiencePage() {
                         type="date"
                         value={formData.start_date}
                         onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       />
                     </div>
 
@@ -394,7 +388,7 @@ export default function WorkExperiencePage() {
                         value={formData.end_date}
                         onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
                         disabled={formData.is_current}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 disabled:bg-gray-100"
                       />
                     </div>
                   </div>
@@ -409,7 +403,7 @@ export default function WorkExperiencePage() {
                         is_current: e.target.checked,
                         end_date: e.target.checked ? '' : prev.end_date
                       }))}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
                     />
                     <label htmlFor="is_current" className="ml-2 block text-sm text-gray-900">
                       I currently work here
@@ -421,18 +415,18 @@ export default function WorkExperiencePage() {
                       Description
                     </label>
                     <textarea
-                      rows={5}
+                      rows={4}
                       value={formData.description}
                       onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Describe your responsibilities, achievements, and key projects..."
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                      placeholder="Describe your role, responsibilities, and achievements..."
                     />
                   </div>
 
                   <div className="flex justify-end space-x-3 pt-6">
                     <button
                       onClick={resetForm}
-                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-[#f5f5f0] transition-colors"
                     >
                       Cancel
                     </button>
@@ -442,7 +436,7 @@ export default function WorkExperiencePage() {
                       className={`flex items-center px-6 py-2 rounded-md font-semibold transition-colors ${
                         saving 
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-gray-900 text-white hover:bg-gray-800'
                       }`}
                     >
                       {saving ? (
@@ -464,52 +458,54 @@ export default function WorkExperiencePage() {
           </div>
         )}
 
-        {/* Experiences List */}
+        {/* Experience List */}
         <div className="space-y-4">
           {experiences.length > 0 ? (
             experiences.map((experience) => (
-              <div key={experience.id} className="bg-white rounded-lg border border-gray-200 p-6">
+              <div key={experience.id} className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center mb-2">
-                      <Building className="w-5 h-5 text-gray-600 mr-2" />
+                      <Briefcase className="w-5 h-5 text-gray-600 mr-2" />
                       <h3 className="text-lg font-semibold text-gray-900">
                         {experience.job_title}
                       </h3>
                     </div>
                     
-                    <p className="text-blue-600 font-medium mb-2">{experience.company_name}</p>
+                    <p className="text-gray-700 font-medium mb-2">{experience.company_name}</p>
                     
                     <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
                       <div className="flex items-center">
                         <Calendar className="w-4 h-4 mr-1" />
                         {formatDate(experience.start_date)} - {
-                          experience.is_current ? 'Present' : formatDate(experience.end_date!)
+                          experience.is_current ? 'Present' : (experience.end_date ? formatDate(experience.end_date) : 'Present')
                         }
                       </div>
+                      
                       <span className="text-gray-400">•</span>
+                      
                       <span>{calculateDuration(experience.start_date, experience.end_date, experience.is_current)}</span>
+                      
+                      {experience.employment_type && (
+                        <>
+                          <span className="text-gray-400">•</span>
+                          <span className="capitalize">{experience.employment_type.replace('-', ' ')}</span>
+                        </>
+                      )}
                       
                       {experience.location && (
                         <>
                           <span className="text-gray-400">•</span>
                           <div className="flex items-center">
-                            <MapPin className="w-4 h-4 mr-1" />
+                            <MapPin className="w-3 h-3 mr-1" />
                             {experience.location}
                           </div>
-                        </>
-                      )}
-                      
-                      {experience.employment_type && (
-                        <>
-                          <span className="text-gray-400">•</span>
-                          <span className="capitalize">{experience.employment_type}</span>
                         </>
                       )}
                     </div>
 
                     {experience.description && (
-                      <p className="text-gray-700 leading-relaxed">
+                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
                         {experience.description}
                       </p>
                     )}
@@ -518,14 +514,14 @@ export default function WorkExperiencePage() {
                   <div className="flex space-x-2 ml-4">
                     <button
                       onClick={() => handleEdit(experience)}
-                      className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                      className="p-2 text-gray-600 hover:text-gray-800 hover:bg-[#f5f5f0] rounded-md transition-colors"
                       title="Edit experience"
                     >
                       <Edit className="w-4 h-4" />
                     </button>
                     <button
                       onClick={() => deleteExperience(experience.id)}
-                      className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                      className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                       title="Delete experience"
                     >
                       <Trash2 className="w-4 h-4" />
@@ -536,14 +532,14 @@ export default function WorkExperiencePage() {
             ))
           ) : (
             <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
-              <Building className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">No Work Experience Added</h3>
               <p className="text-gray-600 mb-6">
-                Add your professional work history to showcase your experience to clients
+                Add your work history to showcase your professional experience
               </p>
               <button
                 onClick={() => setShowForm(true)}
-                className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mx-auto"
+                className="flex items-center px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors mx-auto"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Your First Experience

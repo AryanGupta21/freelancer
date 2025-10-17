@@ -252,10 +252,10 @@ export default function PublicFreelancerProfile() {
   }
 
   const getSkillColor = (proficiency: number) => {
-    if (proficiency >= 4) return 'bg-green-100 text-green-800 border-green-200'
-    if (proficiency >= 3) return 'bg-blue-100 text-blue-800 border-blue-200'
-    if (proficiency >= 2) return 'bg-yellow-100 text-yellow-800 border-yellow-200'
-    return 'bg-gray-100 text-gray-800 border-gray-200'
+    if (proficiency >= 4) return 'bg-[#f5f5f0] text-gray-800 border-gray-300'
+    if (proficiency >= 3) return 'bg-gray-100 text-gray-700 border-gray-200'
+    if (proficiency >= 2) return 'bg-gray-50 text-gray-600 border-gray-200'
+    return 'bg-gray-50 text-gray-500 border-gray-200'
   }
 
   const getSkillLabel = (proficiency: number) => {
@@ -284,18 +284,18 @@ export default function PublicFreelancerProfile() {
 
   const getExperienceLevel = (level: string) => {
     const levels = {
-      'beginner': { label: 'Entry Level', color: 'bg-blue-100 text-blue-800' },
-      'intermediate': { label: 'Intermediate', color: 'bg-green-100 text-green-800' },
-      'expert': { label: 'Expert', color: 'bg-purple-100 text-purple-800' }
+      'beginner': { label: 'Entry Level', color: 'bg-gray-100 text-gray-800' },
+      'intermediate': { label: 'Intermediate', color: 'bg-gray-200 text-gray-800' },
+      'expert': { label: 'Expert', color: 'bg-gray-300 text-gray-900' }
     }
-    return levels[level as keyof typeof levels] || { label: 'Intermediate', color: 'bg-green-100 text-green-800' }
+    return levels[level as keyof typeof levels] || { label: 'Intermediate', color: 'bg-gray-200 text-gray-800' }
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaf8] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading profile...</p>
         </div>
       </div>
@@ -304,14 +304,14 @@ export default function PublicFreelancerProfile() {
 
   if (error || !profile) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaf8] flex items-center justify-center">
         <div className="text-center">
           <User className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h2 className="text-xl font-semibold text-gray-900 mb-2">Profile Not Found</h2>
           <p className="text-gray-600 mb-4">The freelancer profile you're looking for doesn't exist.</p>
           <button
             onClick={() => router.push('/')}
-            className="px-6 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+            className="px-6 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
           >
             Back to Homepage
           </button>
@@ -323,7 +323,7 @@ export default function PublicFreelancerProfile() {
   const experienceLevel = getExperienceLevel(profile.experience_level || 'intermediate')
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fafaf8]">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -349,7 +349,7 @@ export default function PublicFreelancerProfile() {
       </div>
 
       {/* Hero Section */}
-      <div className="bg-gradient-to-br from-green-50 to-blue-50 border-b border-gray-200">
+      <div className="bg-gradient-to-br from-[#f5f5f0] to-gray-100 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 py-12">
           <div className="flex flex-col lg:flex-row items-start lg:items-center gap-8">
             {/* Profile Image */}
@@ -361,7 +361,7 @@ export default function PublicFreelancerProfile() {
                   className="w-32 h-32 rounded-2xl object-cover shadow-lg border-4 border-white"
                 />
               ) : (
-                <div className="w-32 h-32 bg-gradient-to-br from-green-500 to-blue-500 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-lg border-4 border-white">
+                <div className="w-32 h-32 bg-gradient-to-br from-gray-600 to-gray-800 rounded-2xl flex items-center justify-center text-white text-4xl font-bold shadow-lg border-4 border-white">
                   {getInitials(profile.first_name, profile.last_name)}
                 </div>
               )}
@@ -384,7 +384,7 @@ export default function PublicFreelancerProfile() {
                   </div>
                   
                   {profile.title && (
-                    <h2 className="text-xl text-green-600 font-semibold mb-4">{profile.title}</h2>
+                    <h2 className="text-xl text-gray-700 font-semibold mb-4">{profile.title}</h2>
                   )}
                   
                   <div className="flex flex-wrap gap-6 text-sm text-gray-600">
@@ -411,7 +411,7 @@ export default function PublicFreelancerProfile() {
                   <div className="flex flex-wrap gap-6 mt-6">
                     {profile.preferred_rate && (
                       <div className="flex items-center bg-white px-4 py-3 rounded-lg shadow-sm border">
-                        <DollarSign className="w-5 h-5 text-green-600 mr-2" />
+                        <DollarSign className="w-5 h-5 text-gray-700 mr-2" />
                         <div>
                           <p className="text-lg font-bold text-gray-900">${profile.preferred_rate}/hr</p>
                           <p className="text-xs text-gray-500">Starting rate</p>
@@ -421,7 +421,7 @@ export default function PublicFreelancerProfile() {
                     
                     {profile.delivery_time_days && (
                       <div className="flex items-center bg-white px-4 py-3 rounded-lg shadow-sm border">
-                        <Clock className="w-5 h-5 text-blue-600 mr-2" />
+                        <Clock className="w-5 h-5 text-gray-700 mr-2" />
                         <div>
                           <p className="text-lg font-bold text-gray-900">{profile.delivery_time_days} days</p>
                           <p className="text-xs text-gray-500">Delivery time</p>
@@ -431,7 +431,7 @@ export default function PublicFreelancerProfile() {
 
                     {profile.availability_hours_per_week && (
                       <div className="flex items-center bg-white px-4 py-3 rounded-lg shadow-sm border">
-                        <Clock className="w-5 h-5 text-purple-600 mr-2" />
+                        <Clock className="w-5 h-5 text-gray-700 mr-2" />
                         <div>
                           <p className="text-lg font-bold text-gray-900">{profile.availability_hours_per_week}h/week</p>
                           <p className="text-xs text-gray-500">Availability</p>
@@ -443,7 +443,7 @@ export default function PublicFreelancerProfile() {
 
                 {/* Action Buttons */}
                 <div className="flex flex-col gap-3 lg:min-w-[200px]">
-                  <button className="flex items-center justify-center px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors font-semibold">
+                  <button className="flex items-center justify-center px-6 py-3 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors font-semibold">
                     <MessageCircle className="w-5 h-5 mr-2" />
                     Contact Me
                   </button>
@@ -453,14 +453,14 @@ export default function PublicFreelancerProfile() {
                       href={profile.resume_url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center px-6 py-3 border-2 border-green-600 text-green-600 rounded-lg hover:bg-green-50 transition-colors font-semibold"
+                      className="flex items-center justify-center px-6 py-3 border-2 border-gray-700 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-semibold"
                     >
                       <Download className="w-5 h-5 mr-2" />
                       Download Resume
                     </a>
                   )}
                   
-                  <button className="flex items-center justify-center px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-semibold">
+                  <button className="flex items-center justify-center px-6 py-3 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-colors font-semibold">
                     <Briefcase className="w-5 h-5 mr-2" />
                     Hire Me
                   </button>
@@ -481,7 +481,7 @@ export default function PublicFreelancerProfile() {
                   href={profile.linkedin_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center px-4 py-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors text-sm font-medium"
+                  className="flex items-center px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
                 >
                   <ExternalLink className="w-4 h-4 mr-2" />
                   LinkedIn
@@ -503,7 +503,7 @@ export default function PublicFreelancerProfile() {
                   href={profile.website_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center px-4 py-2 bg-green-50 text-green-600 rounded-lg hover:bg-green-100 transition-colors text-sm font-medium"
+                  className="flex items-center px-4 py-2 bg-gray-50 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium"
                 >
                   <Globe className="w-4 h-4 mr-2" />
                   Website
@@ -519,7 +519,7 @@ export default function PublicFreelancerProfile() {
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 py-8">
             <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-              <Star className="w-6 h-6 text-yellow-500 mr-3" />
+              <Star className="w-6 h-6 text-gray-700 mr-3" />
               Skills & Expertise
             </h3>
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -542,14 +542,14 @@ export default function PublicFreelancerProfile() {
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 py-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <Languages className="w-5 h-5 text-blue-500 mr-2" />
+              <Languages className="w-5 h-5 text-gray-700 mr-2" />
               Languages
             </h3>
             <div className="flex flex-wrap gap-3">
               {profile.languages.map((language, index) => (
                 <span
                   key={index}
-                  className="px-3 py-2 bg-blue-50 text-blue-800 rounded-lg text-sm font-medium border border-blue-200"
+                  className="px-3 py-2 bg-gray-50 text-gray-800 rounded-lg text-sm font-medium border border-gray-200"
                 >
                   {language}
                 </span>
@@ -575,7 +575,7 @@ export default function PublicFreelancerProfile() {
                 onClick={() => setActiveTab(tab.id as any)}
                 className={`py-4 px-2 border-b-2 font-semibold text-sm whitespace-nowrap transition-colors ${
                   activeTab === tab.id
-                    ? 'border-green-500 text-green-600'
+                    ? 'border-gray-700 text-gray-900'
                     : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
                 }`}
               >
@@ -607,17 +607,17 @@ export default function PublicFreelancerProfile() {
             )}
 
             {/* Quick Contact Info */}
-            <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-xl p-8 border border-gray-200">
-              <h3 className="text-xl font-bold text-gray-900 mb-6">Get in Touch</h3>
+            <div className="bg-gradient-to-r from-[#f5f5f0] to-gray-100 rounded-xl p-8 border border-gray-200">
+              <h3 className="text-xl font-bold text-gray-900 mb-6">Work With Me</h3>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="text-center">
-                  <MessageCircle className="w-8 h-8 text-green-600 mx-auto mb-3" />
+                  <MessageCircle className="w-8 h-8 text-gray-700 mx-auto mb-3" />
                   <p className="font-semibold text-gray-900">Response Time</p>
                   <p className="text-gray-600 text-sm">Usually within 2 hours</p>
                 </div>
                 
                 <div className="text-center">
-                  <Clock className="w-8 h-8 text-blue-600 mx-auto mb-3" />
+                  <Clock className="w-8 h-8 text-gray-700 mx-auto mb-3" />
                   <p className="font-semibold text-gray-900">Availability</p>
                   <p className="text-gray-600 text-sm">
                     {profile.availability_hours_per_week}h per week
@@ -625,7 +625,7 @@ export default function PublicFreelancerProfile() {
                 </div>
                 
                 <div className="text-center">
-                  <Shield className="w-8 h-8 text-purple-600 mx-auto mb-3" />
+                  <Shield className="w-8 h-8 text-gray-700 mx-auto mb-3" />
                   <p className="font-semibold text-gray-900">Work Style</p>
                   <p className="text-gray-600 text-sm">Professional & reliable</p>
                 </div>
@@ -645,7 +645,7 @@ export default function PublicFreelancerProfile() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {projects.map((project) => (
                   <div key={project.id} className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-all duration-300">
-                    <div className="h-48 bg-gray-100 relative overflow-hidden">
+                    <div className="h-48 bg-[#f5f5f0] relative overflow-hidden">
                       {project.image_urls && project.image_urls.length > 0 ? (
                         <img 
                           src={project.image_urls[0]} 
@@ -654,7 +654,7 @@ export default function PublicFreelancerProfile() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <ImageIcon className="w-16 h-16 text-gray-300" />
+                          <ImageIcon className="w-16 h-16 text-gray-400" />
                         </div>
                       )}
                       
@@ -697,7 +697,7 @@ export default function PublicFreelancerProfile() {
                             href={project.project_url}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-green-600 hover:text-green-700 text-sm font-medium flex items-center"
+                            className="text-gray-700 hover:text-gray-900 text-sm font-medium flex items-center"
                           >
                             View Live
                             <ExternalLink className="w-3 h-3 ml-1" />
@@ -735,18 +735,18 @@ export default function PublicFreelancerProfile() {
                     )}
                     
                     <div className="flex items-start gap-4">
-                      <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Building className="w-4 h-4 text-green-600" />
+                      <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <Building className="w-4 h-4 text-gray-700" />
                       </div>
                       
                       <div className="flex-1">
                         <div className="flex items-start justify-between mb-2">
                           <div>
                             <h4 className="text-lg font-bold text-gray-900">{exp.job_title}</h4>
-                            <p className="text-green-600 font-semibold">{exp.company_name}</p>
+                            <p className="text-gray-700 font-semibold">{exp.company_name}</p>
                           </div>
                           {exp.employment_type && (
-                            <span className="px-3 py-1 bg-blue-100 text-blue-800 text-sm rounded-full capitalize">
+                            <span className="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full capitalize">
                               {exp.employment_type}
                             </span>
                           )}
@@ -793,7 +793,7 @@ export default function PublicFreelancerProfile() {
             {education.length > 0 && (
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <GraduationCap className="w-6 h-6 text-blue-600 mr-3" />
+                  <GraduationCap className="w-6 h-6 text-gray-700 mr-3" />
                   Education
                 </h3>
                 <div className="space-y-4">
@@ -805,15 +805,15 @@ export default function PublicFreelancerProfile() {
                       )}
                       
                       <div className="flex items-start gap-4">
-                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <GraduationCap className="w-4 h-4 text-blue-600" />
+                        <div className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <GraduationCap className="w-4 h-4 text-gray-700" />
                         </div>
                         
                         <div className="flex-1">
                           <h4 className="text-lg font-bold text-gray-900">{edu.institution_name}</h4>
                           
                           {(edu.degree || edu.field_of_study) && (
-                            <p className="text-blue-600 font-semibold mb-2">
+                            <p className="text-gray-700 font-semibold mb-2">
                               {edu.degree} {edu.field_of_study && `in ${edu.field_of_study}`}
                             </p>
                           )}
@@ -851,20 +851,20 @@ export default function PublicFreelancerProfile() {
             {certifications.length > 0 && (
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
-                  <Award className="w-6 h-6 text-yellow-600 mr-3" />
+                  <Award className="w-6 h-6 text-gray-700 mr-3" />
                   Certifications
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {certifications.map((cert) => (
                     <div key={cert.id} className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
                       <div className="flex items-start gap-4">
-                        <div className="w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
-                          <Award className="w-5 h-5 text-yellow-600" />
+                        <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                          <Award className="w-5 h-5 text-gray-700" />
                         </div>
                         
                         <div className="flex-1">
                           <h4 className="font-bold text-gray-900 mb-1">{cert.name}</h4>
-                          <p className="text-blue-600 font-semibold mb-3">{cert.issuing_organization}</p>
+                          <p className="text-gray-700 font-semibold mb-3">{cert.issuing_organization}</p>
                           
                           <div className="space-y-1 text-sm text-gray-600 mb-4">
                             {cert.issue_date && (
@@ -892,7 +892,7 @@ export default function PublicFreelancerProfile() {
                               href={cert.credential_url}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="inline-flex items-center text-green-600 hover:text-green-700 text-sm font-medium"
+                              className="inline-flex items-center text-gray-700 hover:text-gray-900 text-sm font-medium"
                             >
                               <ExternalLink className="w-3 h-3 mr-1" />
                               View Certificate

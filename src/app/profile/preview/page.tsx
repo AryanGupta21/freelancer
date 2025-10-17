@@ -52,9 +52,9 @@ export default function ProfilePreview() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaf8] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading profile preview...</p>
         </div>
       </div>
@@ -63,9 +63,9 @@ export default function ProfilePreview() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-[#fafaf8]">
         <div className="bg-white border-b border-gray-200">
-          <div className="max-w-4xl mx-auto px-4 py-6">
+          <div className="max-w-7xl mx-auto px-4 py-6">
             <div className="flex items-center">
               <button
                 onClick={() => router.back()}
@@ -80,7 +80,7 @@ export default function ProfilePreview() {
           </div>
         </div>
         
-        <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="bg-red-50 border border-red-200 rounded-md p-6 text-center">
             <h2 className="text-lg font-semibold text-red-900 mb-2">Profile Not Available</h2>
             <p className="text-red-700 mb-4">{error}</p>
@@ -97,10 +97,10 @@ export default function ProfilePreview() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fafaf8]">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button
@@ -117,14 +117,14 @@ export default function ProfilePreview() {
             <div className="flex space-x-3">
               <button
                 onClick={() => router.push('/profile/edit')}
-                className="flex items-center px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                className="flex items-center px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-[#f5f5f0] transition-colors"
               >
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Profile
               </button>
               <button
                 onClick={() => window.open(`/freelancer/${freelancerProfileId}`, '_blank')}
-                className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                className="flex items-center px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
               >
                 <ExternalLink className="w-4 h-4 mr-2" />
                 Open Public View
@@ -135,19 +135,19 @@ export default function ProfilePreview() {
       </div>
 
       {/* Tips Banner */}
-      <div className="bg-blue-50 border-b border-blue-200">
-        <div className="max-w-6xl mx-auto px-4 py-4">
+      <div className="bg-[#f5f5f0] border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 py-4">
           <div className="flex items-start space-x-3">
             <div className="flex-shrink-0 mt-0.5">
-              <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+              <div className="w-6 h-6 bg-gray-700 rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-bold">!</span>
               </div>
             </div>
             <div>
-              <h3 className="text-sm font-medium text-blue-900">Profile Tips</h3>
-              <div className="text-sm text-blue-800 mt-1">
+              <h3 className="text-sm font-medium text-gray-900">Profile Tips</h3>
+              <div className="text-sm text-gray-700 mt-1">
                 <p>Make sure your profile is complete to attract more clients:</p>
-                <ul className="list-disc list-inside mt-2 space-y-1">
+                <ul className="list-disc list-inside mt-2 space-y-1 text-gray-600">
                   <li>Add a professional profile photo</li>
                   <li>Write a compelling description of your services</li>
                   <li>Upload portfolio projects showcasing your work</li>

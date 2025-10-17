@@ -362,9 +362,9 @@ export default function CredentialsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaf8] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading credentials...</p>
         </div>
       </div>
@@ -372,7 +372,7 @@ export default function CredentialsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fafaf8]">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-4xl mx-auto px-4 py-6">
@@ -391,7 +391,7 @@ export default function CredentialsPage() {
             </div>
             <button
               onClick={() => setShowForm(activeTab === 'education' ? 'education' : 'certification')}
-              className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              className="flex items-center px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add {activeTab === 'education' ? 'Education' : 'Certification'}
@@ -404,7 +404,7 @@ export default function CredentialsPage() {
               onClick={() => setActiveTab('education')}
               className={`flex items-center pb-4 border-b-2 font-medium transition-colors ${
                 activeTab === 'education'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-gray-900 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -415,7 +415,7 @@ export default function CredentialsPage() {
               onClick={() => setActiveTab('certifications')}
               className={`flex items-center pb-4 border-b-2 font-medium transition-colors ${
                 activeTab === 'certifications'
-                  ? 'border-blue-500 text-blue-600'
+                  ? 'border-gray-900 text-gray-900'
                   : 'border-transparent text-gray-500 hover:text-gray-700'
               }`}
             >
@@ -469,7 +469,7 @@ export default function CredentialsPage() {
                       type="text"
                       value={educationForm.institution_name}
                       onChange={(e) => setEducationForm(prev => ({ ...prev, institution_name: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       placeholder="e.g. Stanford University"
                     />
                   </div>
@@ -483,7 +483,7 @@ export default function CredentialsPage() {
                         type="text"
                         value={educationForm.degree}
                         onChange={(e) => setEducationForm(prev => ({ ...prev, degree: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                         placeholder="e.g. Bachelor's Degree"
                       />
                     </div>
@@ -496,7 +496,7 @@ export default function CredentialsPage() {
                         type="text"
                         value={educationForm.field_of_study}
                         onChange={(e) => setEducationForm(prev => ({ ...prev, field_of_study: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                         placeholder="e.g. Computer Science"
                       />
                     </div>
@@ -511,7 +511,7 @@ export default function CredentialsPage() {
                         type="date"
                         value={educationForm.start_date}
                         onChange={(e) => setEducationForm(prev => ({ ...prev, start_date: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       />
                     </div>
 
@@ -524,7 +524,7 @@ export default function CredentialsPage() {
                         value={educationForm.end_date}
                         onChange={(e) => setEducationForm(prev => ({ ...prev, end_date: e.target.value }))}
                         disabled={educationForm.is_current}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-100"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 disabled:bg-gray-100"
                       />
                     </div>
                   </div>
@@ -539,7 +539,7 @@ export default function CredentialsPage() {
                         is_current: e.target.checked,
                         end_date: e.target.checked ? '' : prev.end_date
                       }))}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
                     />
                     <label htmlFor="is_current_education" className="ml-2 block text-sm text-gray-900">
                       I am currently studying here
@@ -554,7 +554,7 @@ export default function CredentialsPage() {
                       type="text"
                       value={educationForm.grade_gpa}
                       onChange={(e) => setEducationForm(prev => ({ ...prev, grade_gpa: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       placeholder="e.g. 3.8 GPA, First Class Honours"
                     />
                   </div>
@@ -567,7 +567,7 @@ export default function CredentialsPage() {
                       rows={3}
                       value={educationForm.description}
                       onChange={(e) => setEducationForm(prev => ({ ...prev, description: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       placeholder="Additional details, achievements, coursework..."
                     />
                   </div>
@@ -575,7 +575,7 @@ export default function CredentialsPage() {
                   <div className="flex justify-end space-x-3 pt-6">
                     <button
                       onClick={resetForms}
-                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-[#f5f5f0] transition-colors"
                     >
                       Cancel
                     </button>
@@ -585,7 +585,7 @@ export default function CredentialsPage() {
                       className={`flex items-center px-6 py-2 rounded-md font-semibold transition-colors ${
                         saving 
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-gray-900 text-white hover:bg-gray-800'
                       }`}
                     >
                       {saving ? (
@@ -633,7 +633,7 @@ export default function CredentialsPage() {
                       type="text"
                       value={certificationForm.name}
                       onChange={(e) => setCertificationForm(prev => ({ ...prev, name: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       placeholder="e.g. AWS Solutions Architect"
                     />
                   </div>
@@ -646,7 +646,7 @@ export default function CredentialsPage() {
                       type="text"
                       value={certificationForm.issuing_organization}
                       onChange={(e) => setCertificationForm(prev => ({ ...prev, issuing_organization: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       placeholder="e.g. Amazon Web Services"
                     />
                   </div>
@@ -660,7 +660,7 @@ export default function CredentialsPage() {
                         type="date"
                         value={certificationForm.issue_date}
                         onChange={(e) => setCertificationForm(prev => ({ ...prev, issue_date: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       />
                     </div>
 
@@ -672,7 +672,7 @@ export default function CredentialsPage() {
                         type="date"
                         value={certificationForm.expiry_date}
                         onChange={(e) => setCertificationForm(prev => ({ ...prev, expiry_date: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       />
                     </div>
                   </div>
@@ -685,7 +685,7 @@ export default function CredentialsPage() {
                       type="text"
                       value={certificationForm.credential_id}
                       onChange={(e) => setCertificationForm(prev => ({ ...prev, credential_id: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       placeholder="Certificate or license number"
                     />
                   </div>
@@ -698,7 +698,7 @@ export default function CredentialsPage() {
                       type="url"
                       value={certificationForm.credential_url}
                       onChange={(e) => setCertificationForm(prev => ({ ...prev, credential_url: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                       placeholder="https://verify.certificate.com/abc123"
                     />
                   </div>
@@ -706,7 +706,7 @@ export default function CredentialsPage() {
                   <div className="flex justify-end space-x-3 pt-6">
                     <button
                       onClick={resetForms}
-                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-[#f5f5f0] transition-colors"
                     >
                       Cancel
                     </button>
@@ -716,7 +716,7 @@ export default function CredentialsPage() {
                       className={`flex items-center px-6 py-2 rounded-md font-semibold transition-colors ${
                         saving 
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-gray-900 text-white hover:bg-gray-800'
                       }`}
                     >
                       {saving ? (
@@ -743,7 +743,7 @@ export default function CredentialsPage() {
           <div className="space-y-4">
             {educations.length > 0 ? (
               educations.map((education) => (
-                <div key={education.id} className="bg-white rounded-lg border border-gray-200 p-6">
+                <div key={education.id} className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center mb-2">
@@ -754,7 +754,7 @@ export default function CredentialsPage() {
                       </div>
                       
                       {(education.degree || education.field_of_study) && (
-                        <p className="text-blue-600 font-medium mb-2">
+                        <p className="text-gray-700 font-medium mb-2">
                           {education.degree} {education.field_of_study && `in ${education.field_of_study}`}
                         </p>
                       )}
@@ -787,14 +787,14 @@ export default function CredentialsPage() {
                     <div className="flex space-x-2 ml-4">
                       <button
                         onClick={() => handleEditEducation(education)}
-                        className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                        className="p-2 text-gray-600 hover:text-gray-800 hover:bg-[#f5f5f0] rounded-md transition-colors"
                         title="Edit education"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => deleteEducation(education.id)}
-                        className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                        className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                         title="Delete education"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -812,7 +812,7 @@ export default function CredentialsPage() {
                 </p>
                 <button
                   onClick={() => setShowForm('education')}
-                  className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mx-auto"
+                  className="flex items-center px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors mx-auto"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Your First Education
@@ -824,7 +824,7 @@ export default function CredentialsPage() {
           <div className="space-y-4">
             {certifications.length > 0 ? (
               certifications.map((certification) => (
-                <div key={certification.id} className="bg-white rounded-lg border border-gray-200 p-6">
+                <div key={certification.id} className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center mb-2">
@@ -834,7 +834,7 @@ export default function CredentialsPage() {
                         </h3>
                       </div>
                       
-                      <p className="text-blue-600 font-medium mb-2">{certification.issuing_organization}</p>
+                      <p className="text-gray-700 font-medium mb-2">{certification.issuing_organization}</p>
                       
                       <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
                         {certification.issue_date && (
@@ -864,7 +864,7 @@ export default function CredentialsPage() {
                           href={certification.credential_url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center text-blue-600 hover:text-blue-700 text-sm"
+                          className="inline-flex items-center text-gray-700 hover:text-gray-900 text-sm"
                         >
                           <ExternalLink className="w-3 h-3 mr-1" />
                           View Certificate
@@ -875,14 +875,14 @@ export default function CredentialsPage() {
                     <div className="flex space-x-2 ml-4">
                       <button
                         onClick={() => handleEditCertification(certification)}
-                        className="p-2 text-gray-600 hover:text-blue-600 transition-colors"
+                        className="p-2 text-gray-600 hover:text-gray-800 hover:bg-[#f5f5f0] rounded-md transition-colors"
                         title="Edit certification"
                       >
                         <Edit className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => deleteCertification(certification.id)}
-                        className="p-2 text-gray-600 hover:text-red-600 transition-colors"
+                        className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
                         title="Delete certification"
                       >
                         <Trash2 className="w-4 h-4" />
@@ -900,7 +900,7 @@ export default function CredentialsPage() {
                 </p>
                 <button
                   onClick={() => setShowForm('certification')}
-                  className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mx-auto"
+                  className="flex items-center px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors mx-auto"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Your First Certification

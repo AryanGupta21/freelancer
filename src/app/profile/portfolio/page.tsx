@@ -1,66 +1,73 @@
-// src/app/profile/portfolio/page.tsx - Portfolio Management Interface
+// src/app/profile/experience/page.tsx - Work Experience Management
 'use client'
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabase'
 import { 
-  ArrowLeft, Plus, Edit, Trash2, ExternalLink, Upload,
-  Image as ImageIcon, Calendar, Tag, Globe, Save, X
+  ArrowLeft, Plus, Edit, Trash2, Briefcase, MapPin, 
+  Calendar, Save, X, CheckCircle, AlertCircle 
 } from 'lucide-react'
 
-interface PortfolioProject {
+interface WorkExperience {
   id: string
-  title: string
+  job_title: string
+  company_name: string
   description: string | null
-  project_url: string | null
-  image_urls: string[] | null
-  technologies_used: string[] | null
-  project_type: string | null
-  completion_date: string | null
-  client_name: string | null
-  is_featured: boolean
-  display_order: number
+  start_date: string
+  end_date: string | null
+  is_current: boolean
+  location: string | null
+  employment_type: string | null
 }
 
-interface ProjectFormData {
-  title: string
+interface ExperienceFormData {
+  job_title: string
+  company_name: string
   description: string
-  project_url: string
-  project_type: string
-  completion_date: string
-  client_name: string
-  technologies_used: string[]
-  is_featured: boolean
+  start_date: string
+  end_date: string
+  is_current: boolean
+  location: string
+  employment_type: string
 }
 
-export default function PortfolioManagementPage() {
-  const [projects, setProjects] = useState<PortfolioProject[]>([])
+export default function WorkExperiencePage() {
+  const [experiences, setExperiences] = useState<WorkExperience[]>([])
   const [loading, setLoading] = useState(true)
-  const [showAddForm, setShowAddForm] = useState(false)
-  const [editingProject, setEditingProject] = useState<PortfolioProject | null>(null)
-  const [formData, setFormData] = useState<ProjectFormData>({
-    title: '',
-    description: '',
-    project_url: '',
-    project_type: 'web',
-    completion_date: '',
-    client_name: '',
-    technologies_used: [],
-    is_featured: false
-  })
-  const [newTechnology, setNewTechnology] = useState('')
+  const [showForm, setShowForm] = useState(false)
+  const [editingExperience, setEditingExperience] = useState<WorkExperience | null>(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState(false)
   const [freelancerProfileId, setFreelancerProfileId] = useState<string>('')
+
+  const [formData, setFormData] = useState<ExperienceFormData>({
+    job_title: '',
+    company_name: '',
+    description: '',
+    start_date: '',
+    end_date: '',
+    is_current: false,
+    location: '',
+    employment_type: 'full-time'
+  })
 
   const router = useRouter()
 
+  const employmentTypes = [
+    { value: 'full-time', label: 'Full-time' },
+    { value: 'part-time', label: 'Part-time' },
+    { value: 'contract', label: 'Contract' },
+    { value: 'freelance', label: 'Freelance' },
+    { value: 'internship', label: 'Internship' }
+  ]
+
   useEffect(() => {
-    loadPortfolioProjects()
+    loadExperiences()
   }, [])
 
-  const loadPortfolioProjects = async () => {
+  const loadExperiences = async () => {
     try {
       const { data: { user }, error: userError } = await supabase.auth.getUser()
       if (userError || !user) {
@@ -78,19 +85,19 @@ export default function PortfolioManagementPage() {
       if (profileError) throw profileError
       setFreelancerProfileId(profile.id)
 
-      // Load portfolio projects
-      const { data: portfolioData, error: portfolioError } = await supabase
-        .from('portfolio_projects')
+      // Load work experiences
+      const { data: experienceData, error: experienceError } = await supabase
+        .from('work_experiences')
         .select('*')
         .eq('freelancer_id', profile.id)
-        .order('display_order', { ascending: true })
+        .order('start_date', { ascending: false })
 
-      if (portfolioError) throw portfolioError
-      setProjects(portfolioData || [])
+      if (experienceError) throw experienceError
+      setExperiences(experienceData || [])
 
     } catch (err) {
-      console.error('Error loading portfolio:', err)
-      setError('Failed to load portfolio projects')
+      console.error('Error loading experiences:', err)
+      setError('Failed to load work experiences')
     } finally {
       setLoading(false)
     }
@@ -98,55 +105,38 @@ export default function PortfolioManagementPage() {
 
   const resetForm = () => {
     setFormData({
-      title: '',
+      job_title: '',
+      company_name: '',
       description: '',
-      project_url: '',
-      project_type: 'web',
-      completion_date: '',
-      client_name: '',
-      technologies_used: [],
-      is_featured: false
+      start_date: '',
+      end_date: '',
+      is_current: false,
+      location: '',
+      employment_type: 'full-time'
     })
-    setNewTechnology('')
-    setEditingProject(null)
-    setShowAddForm(false)
+    setEditingExperience(null)
+    setShowForm(false)
+    setError(null)
   }
 
-  const handleEdit = (project: PortfolioProject) => {
+  const handleEdit = (experience: WorkExperience) => {
     setFormData({
-      title: project.title,
-      description: project.description || '',
-      project_url: project.project_url || '',
-      project_type: project.project_type || 'web',
-      completion_date: project.completion_date || '',
-      client_name: project.client_name || '',
-      technologies_used: project.technologies_used || [],
-      is_featured: project.is_featured
+      job_title: experience.job_title,
+      company_name: experience.company_name,
+      description: experience.description || '',
+      start_date: experience.start_date,
+      end_date: experience.end_date || '',
+      is_current: experience.is_current,
+      location: experience.location || '',
+      employment_type: experience.employment_type || 'full-time'
     })
-    setEditingProject(project)
-    setShowAddForm(true)
+    setEditingExperience(experience)
+    setShowForm(true)
   }
 
-  const addTechnology = () => {
-    if (newTechnology.trim() && !formData.technologies_used.includes(newTechnology.trim())) {
-      setFormData(prev => ({
-        ...prev,
-        technologies_used: [...prev.technologies_used, newTechnology.trim()]
-      }))
-      setNewTechnology('')
-    }
-  }
-
-  const removeTechnology = (tech: string) => {
-    setFormData(prev => ({
-      ...prev,
-      technologies_used: prev.technologies_used.filter(t => t !== tech)
-    }))
-  }
-
-  const saveProject = async () => {
-    if (!formData.title.trim()) {
-      setError('Project title is required')
+  const saveExperience = async () => {
+    if (!formData.job_title.trim() || !formData.company_name.trim() || !formData.start_date) {
+      setError('Please fill in all required fields')
       return
     }
 
@@ -154,109 +144,111 @@ export default function PortfolioManagementPage() {
     setError(null)
 
     try {
-      const projectData = {
+      const experienceData = {
         freelancer_id: freelancerProfileId,
-        title: formData.title.trim(),
+        job_title: formData.job_title.trim(),
+        company_name: formData.company_name.trim(),
         description: formData.description.trim() || null,
-        project_url: formData.project_url.trim() || null,
-        project_type: formData.project_type,
-        completion_date: formData.completion_date || null,
-        client_name: formData.client_name.trim() || null,
-        technologies_used: formData.technologies_used.length > 0 ? formData.technologies_used : null,
-        is_featured: formData.is_featured,
-        display_order: projects.length
+        start_date: formData.start_date,
+        end_date: formData.is_current ? null : formData.end_date || null,
+        is_current: formData.is_current,
+        location: formData.location.trim() || null,
+        employment_type: formData.employment_type
       }
 
-      if (editingProject) {
-        // Update existing project
-        const { error: updateError } = await (supabase as any)
-          .from('portfolio_projects')
-          .update(projectData)
-          .eq('id', editingProject.id)
-
-        if (updateError) throw updateError
-
-        setProjects(prev => prev.map(p => 
-          p.id === editingProject.id 
-            ? { ...p, ...projectData }
-            : p
-        ))
-      } else {
-        // Create new project
-        const { data: newProject, error: insertError } = await (supabase as any)
-          .from('portfolio_projects')
-          .insert(projectData)
+      if (editingExperience) {
+        const { data, error } = await supabase
+          .from('work_experiences')
+          .update(experienceData)
+          .eq('id', editingExperience.id)
           .select()
           .single()
 
-        if (insertError) throw insertError
-        setProjects(prev => [...prev, newProject])
+        if (error) throw error
+
+        setExperiences(prev => 
+          prev.map(exp => exp.id === editingExperience.id ? data : exp)
+        )
+      } else {
+        const { data, error } = await supabase
+          .from('work_experiences')
+          .insert(experienceData)
+          .select()
+          .single()
+
+        if (error) throw error
+
+        setExperiences(prev => [data, ...prev])
       }
 
+      setSuccess(true)
       resetForm()
-      
+      setTimeout(() => setSuccess(false), 3000)
+
     } catch (err) {
-      console.error('Error saving project:', err)
-      setError(err instanceof Error ? err.message : 'Failed to save project')
+      console.error('Error saving experience:', err)
+      setError('Failed to save work experience')
     } finally {
       setSaving(false)
     }
   }
 
-  const deleteProject = async (projectId: string) => {
-    if (!confirm('Are you sure you want to delete this project?')) return
+  const deleteExperience = async (experienceId: string) => {
+    if (!confirm('Are you sure you want to delete this work experience?')) return
 
     try {
-      const { error } = await (supabase as any)
-        .from('portfolio_projects')
+      const { error } = await supabase
+        .from('work_experiences')
         .delete()
-        .eq('id', projectId)
+        .eq('id', experienceId)
 
       if (error) throw error
 
-      setProjects(prev => prev.filter(p => p.id !== projectId))
+      setExperiences(prev => prev.filter(exp => exp.id !== experienceId))
     } catch (err) {
-      console.error('Error deleting project:', err)
-      setError('Failed to delete project')
+      console.error('Error deleting experience:', err)
+      setError('Failed to delete work experience')
     }
   }
 
-  const toggleFeatured = async (project: PortfolioProject) => {
-    try {
-      const { error } = await (supabase as any)
-        .from('portfolio_projects')
-        .update({ is_featured: !project.is_featured })
-        .eq('id', project.id)
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long'
+    })
+  }
 
-      if (error) throw error
-
-      setProjects(prev => prev.map(p => 
-        p.id === project.id 
-          ? { ...p, is_featured: !p.is_featured }
-          : p
-      ))
-    } catch (err) {
-      console.error('Error updating featured status:', err)
-      setError('Failed to update featured status')
+  const calculateDuration = (startDate: string, endDate: string | null, isCurrent: boolean) => {
+    const start = new Date(startDate)
+    const end = isCurrent ? new Date() : new Date(endDate || '')
+    
+    const diffTime = Math.abs(end.getTime() - start.getTime())
+    const diffYears = Math.floor(diffTime / (1000 * 60 * 60 * 24 * 365))
+    const diffMonths = Math.floor((diffTime % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30))
+    
+    if (diffYears > 0) {
+      return `${diffYears} year${diffYears > 1 ? 's' : ''} ${diffMonths > 0 ? `${diffMonths} month${diffMonths > 1 ? 's' : ''}` : ''}`
+    } else {
+      return `${Math.max(1, diffMonths)} month${diffMonths > 1 ? 's' : ''}`
     }
   }
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaf8] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading portfolio...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading work experience...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fafaf8]">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button
@@ -266,37 +258,46 @@ export default function PortfolioManagementPage() {
                 <ArrowLeft className="w-5 h-5" />
               </button>
               <div>
-                <h1 className="text-2xl font-bold text-gray-900">Portfolio Management</h1>
-                <p className="text-gray-600 mt-1">Showcase your best work to attract clients</p>
+                <h1 className="text-2xl font-bold text-gray-900">Work Experience</h1>
+                <p className="text-gray-600 mt-1">Add your professional work history and accomplishments</p>
               </div>
             </div>
             <button
-              onClick={() => setShowAddForm(true)}
-              className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+              onClick={() => setShowForm(true)}
+              className="flex items-center px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
             >
               <Plus className="w-4 h-4 mr-2" />
-              Add Project
+              Add Experience
             </button>
           </div>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {/* Success Message */}
+        {success && (
+          <div className="mb-6 bg-green-50 border border-green-200 rounded-md p-4 flex items-center">
+            <CheckCircle className="w-5 h-5 text-green-600 mr-2" />
+            <p className="text-green-800 text-sm">Work experience updated successfully!</p>
+          </div>
+        )}
+
         {/* Error Message */}
         {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4">
+          <div className="mb-6 bg-red-50 border border-red-200 rounded-md p-4 flex items-center">
+            <AlertCircle className="w-5 h-5 text-red-600 mr-2" />
             <p className="text-red-800 text-sm">{error}</p>
           </div>
         )}
 
-        {/* Add/Edit Form */}
-        {showAddForm && (
+        {/* Experience Form Modal */}
+        {showForm && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-lg max-w-2xl w-full max-h-screen overflow-y-auto">
               <div className="p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h2 className="text-xl font-semibold text-gray-900">
-                    {editingProject ? 'Edit Project' : 'Add New Project'}
+                    {editingExperience ? 'Edit Work Experience' : 'Add Work Experience'}
                   </h2>
                   <button
                     onClick={resetForm}
@@ -309,15 +310,104 @@ export default function PortfolioManagementPage() {
                 <div className="space-y-6">
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Project Title *
+                      Job Title *
                     </label>
                     <input
                       type="text"
-                      value={formData.title}
-                      onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="e.g. E-commerce Website Redesign"
+                      value={formData.job_title}
+                      onChange={(e) => setFormData(prev => ({ ...prev, job_title: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                      placeholder="e.g. Senior Software Engineer"
                     />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Company Name *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.company_name}
+                      onChange={(e) => setFormData(prev => ({ ...prev, company_name: e.target.value }))}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                      placeholder="e.g. Google Inc."
+                    />
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Employment Type
+                      </label>
+                      <select
+                        value={formData.employment_type}
+                        onChange={(e) => setFormData(prev => ({ ...prev, employment_type: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                      >
+                        {employmentTypes.map(type => (
+                          <option key={type.value} value={type.value}>
+                            {type.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Location
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.location}
+                        onChange={(e) => setFormData(prev => ({ ...prev, location: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                        placeholder="e.g. San Francisco, CA"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Start Date *
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.start_date}
+                        onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        End Date
+                      </label>
+                      <input
+                        type="date"
+                        value={formData.end_date}
+                        onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
+                        disabled={formData.is_current}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 disabled:bg-gray-100"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="is_current"
+                      checked={formData.is_current}
+                      onChange={(e) => setFormData(prev => ({ 
+                        ...prev, 
+                        is_current: e.target.checked,
+                        end_date: e.target.checked ? '' : prev.end_date
+                      }))}
+                      className="h-4 w-4 text-gray-600 focus:ring-gray-500 border-gray-300 rounded"
+                    />
+                    <label htmlFor="is_current" className="ml-2 block text-sm text-gray-900">
+                      I currently work here
+                    </label>
                   </div>
 
                   <div>
@@ -328,139 +418,25 @@ export default function PortfolioManagementPage() {
                       rows={4}
                       value={formData.description}
                       onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="Describe the project, your role, challenges solved..."
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
+                      placeholder="Describe your role, responsibilities, and achievements..."
                     />
                   </div>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Project Type
-                      </label>
-                      <select
-                        value={formData.project_type}
-                        onChange={(e) => setFormData(prev => ({ ...prev, project_type: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      >
-                        <option value="web">Web Development</option>
-                        <option value="mobile">Mobile App</option>
-                        <option value="design">Design</option>
-                        <option value="marketing">Marketing</option>
-                        <option value="writing">Writing</option>
-                        <option value="other">Other</option>
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Completion Date
-                      </label>
-                      <input
-                        type="date"
-                        value={formData.completion_date}
-                        onChange={(e) => setFormData(prev => ({ ...prev, completion_date: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-6">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Project URL
-                      </label>
-                      <input
-                        type="url"
-                        value={formData.project_url}
-                        onChange={(e) => setFormData(prev => ({ ...prev, project_url: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="https://example.com"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Client Name
-                      </label>
-                      <input
-                        type="text"
-                        value={formData.client_name}
-                        onChange={(e) => setFormData(prev => ({ ...prev, client_name: e.target.value }))}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="Client or Company Name"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Technologies */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Technologies Used
-                    </label>
-                    <div className="flex space-x-2 mb-3">
-                      <input
-                        type="text"
-                        value={newTechnology}
-                        onChange={(e) => setNewTechnology(e.target.value)}
-                        placeholder="Add technology"
-                        className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        onKeyPress={(e) => e.key === 'Enter' && addTechnology()}
-                      />
-                      <button
-                        onClick={addTechnology}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                      >
-                        <Plus className="w-4 h-4" />
-                      </button>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {formData.technologies_used.map((tech, index) => (
-                        <span
-                          key={index}
-                          className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
-                        >
-                          {tech}
-                          <button
-                            onClick={() => removeTechnology(tech)}
-                            className="ml-2 text-blue-600 hover:text-blue-800"
-                          >
-                            <X className="w-3 h-3" />
-                          </button>
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Featured Project */}
-                  <div className="flex items-center">
-                    <input
-                      type="checkbox"
-                      id="featured"
-                      checked={formData.is_featured}
-                      onChange={(e) => setFormData(prev => ({ ...prev, is_featured: e.target.checked }))}
-                      className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    />
-                    <label htmlFor="featured" className="ml-2 block text-sm text-gray-900">
-                      Feature this project (show prominently on profile)
-                    </label>
-                  </div>
-
-                  {/* Action Buttons */}
                   <div className="flex justify-end space-x-3 pt-6">
                     <button
                       onClick={resetForm}
-                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-[#f5f5f0] transition-colors"
                     >
                       Cancel
                     </button>
                     <button
-                      onClick={saveProject}
+                      onClick={saveExperience}
                       disabled={saving}
                       className={`flex items-center px-6 py-2 rounded-md font-semibold transition-colors ${
                         saving 
                           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                          : 'bg-blue-600 text-white hover:bg-blue-700'
+                          : 'bg-gray-900 text-white hover:bg-gray-800'
                       }`}
                     >
                       {saving ? (
@@ -471,7 +447,7 @@ export default function PortfolioManagementPage() {
                       ) : (
                         <>
                           <Save className="w-4 h-4 mr-2" />
-                          Save Project
+                          Save Experience
                         </>
                       )}
                     </button>
@@ -482,139 +458,95 @@ export default function PortfolioManagementPage() {
           </div>
         )}
 
-        {/* Portfolio Projects Grid */}
-        {projects.length > 0 ? (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {projects.map((project) => (
-              <div key={project.id} className="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden">
-                {/* Project Image Placeholder */}
-                <div className="h-48 bg-gray-100 flex items-center justify-center">
-                  <ImageIcon className="w-12 h-12 text-gray-400" />
-                  <span className="ml-2 text-gray-500">No image yet</span>
-                </div>
-
-                <div className="p-4">
-                  <div className="flex items-start justify-between mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900 line-clamp-1">
-                      {project.title}
-                    </h3>
-                    {project.is_featured && (
-                      <span className="px-2 py-1 bg-yellow-100 text-yellow-800 text-xs rounded-full">
-                        Featured
-                      </span>
-                    )}
-                  </div>
-
-                  {project.description && (
-                    <p className="text-gray-600 text-sm mb-3 line-clamp-2">
-                      {project.description}
-                    </p>
-                  )}
-
-                  {/* Project Details */}
-                  <div className="space-y-2 mb-4">
-                    {project.project_type && (
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Tag className="w-3 h-3 mr-1" />
-                        {project.project_type}
-                      </div>
-                    )}
+        {/* Experience List */}
+        <div className="space-y-4">
+          {experiences.length > 0 ? (
+            experiences.map((experience) => (
+              <div key={experience.id} className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm hover:shadow-md transition-shadow">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center mb-2">
+                      <Briefcase className="w-5 h-5 text-gray-600 mr-2" />
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {experience.job_title}
+                      </h3>
+                    </div>
                     
-                    {project.completion_date && (
-                      <div className="flex items-center text-xs text-gray-500">
-                        <Calendar className="w-3 h-3 mr-1" />
-                        {new Date(project.completion_date).toLocaleDateString()}
+                    <p className="text-gray-700 font-medium mb-2">{experience.company_name}</p>
+                    
+                    <div className="flex flex-wrap gap-4 text-sm text-gray-600 mb-3">
+                      <div className="flex items-center">
+                        <Calendar className="w-4 h-4 mr-1" />
+                        {formatDate(experience.start_date)} - {
+                          experience.is_current ? 'Present' : (experience.end_date ? formatDate(experience.end_date) : 'Present')
+                        }
                       </div>
-                    )}
-
-                    {project.client_name && (
-                      <div className="flex items-center text-xs text-gray-500">
-                        Client: {project.client_name}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Technologies */}
-                  {project.technologies_used && project.technologies_used.length > 0 && (
-                    <div className="flex flex-wrap gap-1 mb-4">
-                      {project.technologies_used.slice(0, 3).map((tech, index) => (
-                        <span
-                          key={index}
-                          className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies_used.length > 3 && (
-                        <span className="px-2 py-1 bg-gray-100 text-gray-500 text-xs rounded">
-                          +{project.technologies_used.length - 3}
-                        </span>
+                      
+                      <span className="text-gray-400">•</span>
+                      
+                      <span>{calculateDuration(experience.start_date, experience.end_date, experience.is_current)}</span>
+                      
+                      {experience.employment_type && (
+                        <>
+                          <span className="text-gray-400">•</span>
+                          <span className="capitalize">{experience.employment_type.replace('-', ' ')}</span>
+                        </>
+                      )}
+                      
+                      {experience.location && (
+                        <>
+                          <span className="text-gray-400">•</span>
+                          <div className="flex items-center">
+                            <MapPin className="w-3 h-3 mr-1" />
+                            {experience.location}
+                          </div>
+                        </>
                       )}
                     </div>
-                  )}
 
-                  {/* Action Buttons */}
-                  <div className="flex items-center justify-between">
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => handleEdit(project)}
-                        className="p-1 text-gray-600 hover:text-blue-600 transition-colors"
-                        title="Edit project"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => deleteProject(project.id)}
-                        className="p-1 text-gray-600 hover:text-red-600 transition-colors"
-                        title="Delete project"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => toggleFeatured(project)}
-                        className={`p-1 transition-colors ${
-                          project.is_featured 
-                            ? 'text-yellow-600 hover:text-yellow-700' 
-                            : 'text-gray-600 hover:text-yellow-600'
-                        }`}
-                        title={project.is_featured ? 'Remove from featured' : 'Mark as featured'}
-                      >
-                        ★
-                      </button>
-                    </div>
-
-                    {project.project_url && (
-                      <a
-                        href={project.project_url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center text-blue-600 hover:text-blue-700 text-sm transition-colors"
-                      >
-                        <Globe className="w-3 h-3 mr-1" />
-                        View
-                      </a>
+                    {experience.description && (
+                      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+                        {experience.description}
+                      </p>
                     )}
+                  </div>
+
+                  <div className="flex space-x-2 ml-4">
+                    <button
+                      onClick={() => handleEdit(experience)}
+                      className="p-2 text-gray-600 hover:text-gray-800 hover:bg-[#f5f5f0] rounded-md transition-colors"
+                      title="Edit experience"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => deleteExperience(experience.id)}
+                      className="p-2 text-gray-600 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                      title="Delete experience"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-12">
-            <ImageIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No portfolio projects yet</h3>
-            <p className="text-gray-600 mb-6">
-              Start building your portfolio by adding your best work projects.
-            </p>
-            <button
-              onClick={() => setShowAddForm(true)}
-              className="flex items-center px-6 py-3 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors mx-auto"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Your First Project
-            </button>
-          </div>
-        )}
+            ))
+          ) : (
+            <div className="text-center py-12 bg-white rounded-lg border border-gray-200">
+              <Briefcase className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No Work Experience Added</h3>
+              <p className="text-gray-600 mb-6">
+                Add your work history to showcase your professional experience
+              </p>
+              <button
+                onClick={() => setShowForm(true)}
+                className="flex items-center px-6 py-3 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors mx-auto"
+              >
+                <Plus className="w-4 h-4 mr-2" />
+                Add Your First Experience
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )

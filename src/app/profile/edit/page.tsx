@@ -271,9 +271,9 @@ export default function ProfileEditPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaf8] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading profile...</p>
         </div>
       </div>
@@ -281,15 +281,15 @@ export default function ProfileEditPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fafaf8]">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <button
                 onClick={() => router.back()}
-                className="mr-4 p-2 text-gray-600 hover:text-gray-800 transition-colors"
+                className="mr-4 p-2 text-gray-600 hover:text-gray-800 hover:bg-[#f5f5f0] rounded-md transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
               </button>
@@ -304,7 +304,7 @@ export default function ProfileEditPage() {
               className={`flex items-center px-6 py-3 rounded-md font-semibold transition-colors ${
                 saving 
                   ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-gray-900 text-white hover:bg-gray-800'
               }`}
             >
               {saving ? (
@@ -323,7 +323,7 @@ export default function ProfileEditPage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Success Message */}
         {success && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-md p-4">
@@ -340,9 +340,11 @@ export default function ProfileEditPage() {
 
         <div className="space-y-8">
           {/* Basic Information */}
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
+          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
             <div className="flex items-center mb-6">
-              <User className="w-5 h-5 text-gray-600 mr-2" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f5f5f0] mr-3">
+                <User className="w-5 h-5 text-gray-700" />
+              </div>
               <h2 className="text-xl font-semibold text-gray-900">Basic Information</h2>
             </div>
 
@@ -355,7 +357,7 @@ export default function ProfileEditPage() {
                   type="text"
                   value={profileData.first_name}
                   onChange={(e) => handleProfileChange('first_name', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500 text-gray-500"
                 />
               </div>
 
@@ -367,7 +369,7 @@ export default function ProfileEditPage() {
                   type="text"
                   value={profileData.last_name}
                   onChange={(e) => handleProfileChange('last_name', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-gray-500 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                 />
               </div>
 
@@ -379,7 +381,7 @@ export default function ProfileEditPage() {
                   type="email"
                   value={profileData.email}
                   disabled
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md bg-[#f5f5f0] text-gray-500"
                 />
                 <p className="text-xs text-gray-500 mt-1">Email cannot be changed</p>
               </div>
@@ -392,7 +394,7 @@ export default function ProfileEditPage() {
                   type="tel"
                   value={profileData.phone || ''}
                   onChange={(e) => handleProfileChange('phone', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 text-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                   placeholder="+1 (555) 123-4567"
                 />
               </div>
@@ -405,7 +407,7 @@ export default function ProfileEditPage() {
                   type="text"
                   value={profileData.country || ''}
                   onChange={(e) => handleProfileChange('country', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border text-gray-500 border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                   placeholder="United States"
                 />
               </div>
@@ -418,7 +420,7 @@ export default function ProfileEditPage() {
                   type="text"
                   value={profileData.city || ''}
                   onChange={(e) => handleProfileChange('city', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 text-gray-500 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                   placeholder="New York"
                 />
               </div>
@@ -426,9 +428,11 @@ export default function ProfileEditPage() {
           </div>
 
           {/* Professional Information */}
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
+          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
             <div className="flex items-center mb-6">
-              <Edit className="w-5 h-5 text-gray-600 mr-2" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f5f5f0] mr-3">
+                <Edit className="w-5 h-5 text-gray-700" />
+              </div>
               <h2 className="text-xl font-semibold text-gray-900">Professional Information</h2>
             </div>
 
@@ -441,7 +445,7 @@ export default function ProfileEditPage() {
                   type="text"
                   value={freelancerData.title || ''}
                   onChange={(e) => handleFreelancerChange('title', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 text-gray-500 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                   placeholder="e.g. Full Stack Developer"
                 />
               </div>
@@ -454,7 +458,7 @@ export default function ProfileEditPage() {
                   rows={6}
                   value={freelancerData.description || ''}
                   onChange={(e) => handleFreelancerChange('description', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2  text-gray-500 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                   placeholder="Describe your skills, experience, and services..."
                 />
               </div>
@@ -462,7 +466,7 @@ export default function ProfileEditPage() {
               <div className="grid md:grid-cols-3 gap-6">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <DollarSign className="w-4 h-4 inline mr-1" />
+                    <DollarSign className="w-4 h-4 inline mr-1 text-gray-600" />
                     Hourly Rate (USD)
                   </label>
                   <input
@@ -470,14 +474,14 @@ export default function ProfileEditPage() {
                     min="1"
                     value={freelancerData.preferred_rate || ''}
                     onChange={(e) => handleFreelancerChange('preferred_rate', e.target.value ? parseInt(e.target.value) : null)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full text-gray-500 px-3 text-gray-500 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                     placeholder="50"
                   />
                 </div>
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    <Clock className="w-4 h-4 inline mr-1" />
+                    <Clock className="w-4 h-4 inline mr-1 text-gray-600" />
                     Hours per Week
                   </label>
                   <input
@@ -486,7 +490,7 @@ export default function ProfileEditPage() {
                     max="168"
                     value={freelancerData.availability_hours_per_week || ''}
                     onChange={(e) => handleFreelancerChange('availability_hours_per_week', e.target.value ? parseInt(e.target.value) : null)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                     placeholder="40"
                   />
                 </div>
@@ -500,7 +504,7 @@ export default function ProfileEditPage() {
                     min="1"
                     value={freelancerData.delivery_time_days || ''}
                     onChange={(e) => handleFreelancerChange('delivery_time_days', e.target.value ? parseInt(e.target.value) : null)}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                     placeholder="7"
                   />
                 </div>
@@ -513,7 +517,7 @@ export default function ProfileEditPage() {
                 <select
                   value={freelancerData.experience_level || 'intermediate'}
                   onChange={(e) => handleFreelancerChange('experience_level', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                 >
                   <option value="beginner">Beginner (0-2 years)</option>
                   <option value="intermediate">Intermediate (2-5 years)</option>
@@ -524,12 +528,12 @@ export default function ProfileEditPage() {
           </div>
 
           {/* Skills Management */}
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
+          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-semibold text-gray-900">Skills & Expertise</h2>
               <button
                 onClick={() => router.push('/onboarding/skills')}
-                className="flex items-center px-4 py-2 text-blue-600 hover:text-blue-700 transition-colors"
+                className="flex items-center px-4 py-2 text-gray-700 hover:text-gray-900 hover:bg-[#f5f5f0] rounded-md transition-colors"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add Skills
@@ -539,7 +543,7 @@ export default function ProfileEditPage() {
             {currentSkills.length > 0 ? (
               <div className="space-y-4">
                 {currentSkills.map((skill) => (
-                  <div key={skill.id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                  <div key={skill.id} className="flex items-center justify-between p-4 bg-[#f5f5f0] rounded-lg">
                     <div>
                       <h3 className="font-medium text-gray-900">{skill.name}</h3>
                       <p className="text-sm text-gray-600">{skill.category_name}</p>
@@ -551,7 +555,7 @@ export default function ProfileEditPage() {
                         <select
                           value={skill.proficiency_level}
                           onChange={(e) => updateSkillProficiency(skill.id, parseInt(e.target.value))}
-                          className="px-2 py-1 border border-gray-300 rounded text-sm"
+                          className="px-2 py-1 border border-gray-300 rounded text-sm focus:outline-none focus:ring-2 focus:ring-gray-500"
                         >
                           <option value={1}>Beginner</option>
                           <option value={2}>Basic</option>
@@ -563,7 +567,7 @@ export default function ProfileEditPage() {
                       
                       <button
                         onClick={() => removeSkill(skill.id)}
-                        className="p-1 text-red-600 hover:text-red-700 transition-colors"
+                        className="p-1 text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -576,7 +580,7 @@ export default function ProfileEditPage() {
                 <p>No skills added yet.</p>
                 <button
                   onClick={() => router.push('/onboarding/skills')}
-                  className="mt-2 text-blue-600 hover:text-blue-700 transition-colors"
+                  className="mt-2 text-gray-700 hover:text-gray-900 transition-colors"
                 >
                   Add your first skill
                 </button>
@@ -585,7 +589,7 @@ export default function ProfileEditPage() {
           </div>
 
           {/* Languages */}
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
+          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
             <h2 className="text-xl font-semibold text-gray-900 mb-6">Languages</h2>
             
             <div className="mb-4">
@@ -595,12 +599,12 @@ export default function ProfileEditPage() {
                   value={newLanguage}
                   onChange={(e) => setNewLanguage(e.target.value)}
                   placeholder="Add a language"
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex-1 px-3 text-gray-500 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                   onKeyPress={(e) => e.key === 'Enter' && addLanguage()}
                 />
                 <button
                   onClick={addLanguage}
-                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                 </button>
@@ -611,12 +615,12 @@ export default function ProfileEditPage() {
               {freelancerData.languages?.map((language, index) => (
                 <span
                   key={index}
-                  className="inline-flex items-center px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm"
+                  className="inline-flex items-center px-3 py-1 bg-[#f5f5f0] text-gray-800 rounded-full text-sm border border-gray-200"
                 >
                   {language}
                   <button
                     onClick={() => removeLanguage(language)}
-                    className="ml-2 text-blue-600 hover:text-blue-800"
+                    className="ml-2 text-gray-600 hover:text-gray-800"
                   >
                     <X className="w-3 h-3" />
                   </button>
@@ -626,9 +630,11 @@ export default function ProfileEditPage() {
           </div>
 
           {/* Social Links */}
-          <div className="bg-white rounded-lg p-6 border border-gray-200">
+          <div className="bg-white rounded-lg p-6 border border-gray-200 shadow-sm">
             <div className="flex items-center mb-6">
-              <Globe className="w-5 h-5 text-gray-600 mr-2" />
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#f5f5f0] mr-3">
+                <Globe className="w-5 h-5 text-gray-700" />
+              </div>
               <h2 className="text-xl font-semibold text-gray-900">Social Links</h2>
             </div>
 
@@ -641,7 +647,7 @@ export default function ProfileEditPage() {
                   type="url"
                   value={freelancerData.linkedin_url || ''}
                   onChange={(e) => handleFreelancerChange('linkedin_url', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                   placeholder="https://linkedin.com/in/yourprofile"
                 />
               </div>
@@ -654,7 +660,7 @@ export default function ProfileEditPage() {
                   type="url"
                   value={freelancerData.github_url || ''}
                   onChange={(e) => handleFreelancerChange('github_url', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                   placeholder="https://github.com/yourusername"
                 />
               </div>
@@ -667,7 +673,7 @@ export default function ProfileEditPage() {
                   type="url"
                   value={freelancerData.website_url || ''}
                   onChange={(e) => handleFreelancerChange('website_url', e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full text-gray-500 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 focus:border-gray-500"
                   placeholder="https://yourwebsite.com"
                 />
               </div>

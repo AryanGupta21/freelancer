@@ -175,9 +175,9 @@ export default function ResumeManagementPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-[#fafaf8] flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto mb-4"></div>
           <p className="text-gray-600">Loading resume...</p>
         </div>
       </div>
@@ -185,10 +185,10 @@ export default function ResumeManagementPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-[#fafaf8]">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto px-4 py-6">
+        <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center">
             <button
               onClick={() => router.back()}
@@ -204,7 +204,7 @@ export default function ResumeManagementPage() {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-8">
         {/* Success Message */}
         {success && (
           <div className="mb-6 bg-green-50 border border-green-200 rounded-md p-4 flex items-center">
@@ -221,13 +221,13 @@ export default function ResumeManagementPage() {
           </div>
         )}
 
-        <div className="bg-white rounded-lg border border-gray-200 p-6">
+        <div className="bg-white rounded-lg border border-gray-200 p-6 shadow-sm">
           {resumeData?.resume_url ? (
             // Current Resume Display
             <div className="text-center">
               <div className="mb-6">
-                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <FileText className="w-8 h-8 text-blue-600" />
+                <div className="w-16 h-16 bg-[#f5f5f0] rounded-full flex items-center justify-center mx-auto mb-4">
+                  <FileText className="w-8 h-8 text-gray-700" />
                 </div>
                 <h2 className="text-xl font-semibold text-gray-900 mb-2">Current Resume</h2>
                 <p className="text-gray-600 text-sm">
@@ -243,7 +243,7 @@ export default function ResumeManagementPage() {
                   href={resumeData.resume_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                  className="flex items-center px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors"
                 >
                   <Eye className="w-4 h-4 mr-2" />
                   Preview
@@ -275,7 +275,7 @@ export default function ResumeManagementPage() {
           ) : (
             // No Resume State
             <div className="text-center">
-              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-[#f5f5f0] rounded-full flex items-center justify-center mx-auto mb-4">
                 <FileText className="w-8 h-8 text-gray-400" />
               </div>
               <h2 className="text-xl font-semibold text-gray-900 mb-2">No Resume Uploaded</h2>
@@ -295,12 +295,12 @@ export default function ResumeManagementPage() {
               disabled={uploading}
               className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
             />
-            <div className={`border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-blue-400 transition-colors ${
-              uploading ? 'bg-gray-50 cursor-not-allowed' : 'cursor-pointer hover:bg-blue-50'
+            <div className={`border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:border-gray-400 transition-colors ${
+              uploading ? 'bg-[#f5f5f0] cursor-not-allowed' : 'cursor-pointer hover:bg-[#f5f5f0]'
             }`}>
               {uploading ? (
                 <div className="flex flex-col items-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mb-4"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mb-4"></div>
                   <p className="text-gray-600">Uploading resume...</p>
                 </div>
               ) : (
@@ -318,9 +318,9 @@ export default function ResumeManagementPage() {
           </div>
 
           {/* Tips */}
-          <div className="mt-6 bg-blue-50 border border-blue-200 rounded-md p-4">
-            <h4 className="text-sm font-medium text-blue-800 mb-2">Resume Tips:</h4>
-            <ul className="text-sm text-blue-700 space-y-1">
+          <div className="mt-6 bg-[#f5f5f0] border border-gray-200 rounded-md p-4">
+            <h4 className="text-sm font-medium text-gray-800 mb-2">Resume Tips:</h4>
+            <ul className="text-sm text-gray-700 space-y-1">
               <li>• Keep it to 1-2 pages maximum</li>
               <li>• Include relevant work experience and skills</li>
               <li>• Use a clean, professional format</li>
